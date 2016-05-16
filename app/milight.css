@@ -1,0 +1,72 @@
+.milight-container {}
+
+.milight-label-container {
+    float: left;
+}
+
+.milight-label-container {
+    width: 20%;
+    margin-right: 5px;
+}
+
+.milight-switch-container {
+    float: right;
+}
+
+.milight-brightness-button-container, .milight-temperature-button-container {
+    float: right;
+    width: 70px;
+    height: 30px;
+    margin: 0px;
+    margin-top: -4px;
+}
+
+.milight-brightness-button-container div, .milight-temperature-button-container div {
+    margin: 0px;
+    margin-top: 2px;
+}
+
+.milight-brightness-button-container div a, .milight-temperature-button-container div a  {
+    width: 20% !important;
+    float: right;
+    margin: 0px !important;
+    height: 15px !important;
+    padding: 8px !important;
+}
+
+
+
+.milight-dimlevel-container {
+    float: right;
+
+    width: 30%;
+    height: 30px;
+}
+
+.milight-dimlevel-container .ui-slider-track{
+    margin-left: 0px;
+}
+
+.milight-dimlevel-container .ui-slider {
+    margin-top: 3px;
+}
+
+.milight-hue-container {
+    float: right;
+    margin-right: 15px;
+    margin-left: 0px;
+    width: 30%;
+    height: 30px;
+}
+
+.milight-hue-container .ui-slider-track{
+    margin-left: 0px;
+}
+
+.milight-hue-container .ui-slider {
+    width: 100%;
+    margin-top: 3px;
+}
+
+
+

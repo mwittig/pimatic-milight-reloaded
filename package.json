@@ -1,0 +1,40 @@
+{
+  "name": "pimatic-milight",
+  "description": "Pimatic plugin for Milight",
+  "author": {
+    "name": "Marcus Wittig",
+    "url": "https://github.com/mwittig/node-milight-promise"
+  },
+  "version": "0.9.0",
+  "license": "GPL-2.0",
+  "main": "milight",
+  "configSchema": "milight-config-schema.coffee",
+  "files": [
+    "milight.coffee",
+    "README.md",
+    "LICENSE",
+    "app",
+    "predicates_and_actions",
+    "milight-config-schema.coffee",
+    "device-config-schema.coffee"
+  ],
+  "homepage": "https://github.com/mwittig/pimatic-milight-reloaded",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mwittig/pimatic-milight-reloaded.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mwittig/pimatic-milight-reloaded/issues"
+  },
+  "dependencies": {
+    "node-milight-promise": "^0.0.9",
+    "pimatic-plugin-commons": "^0.8.8"
+  },
+  "peerDependencies": {
+    "pimatic": ">=0.8.0 <1.0.0"
+  },
+  "engines": {
+    "node": ">0.8.x",
+    "npm": ">1.1.x"
+  }
+}
