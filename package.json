@@ -1,6 +1,6 @@
 {
   "name": "pimatic-milight",
-  "description": "Pimatic plugin for Milight",
+  "description": "A pimtaic plugin to control Milight LED lights and its OEM equivalents such as Rocket LED, Limitless LED Applamp, Easybulb, s`luce, iLight, iBulb, and Kreuzer",
   "author": {
     "name": "Marcus Wittig",
     "url": "https://github.com/mwittig/node-milight-promise"
