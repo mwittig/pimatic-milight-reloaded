@@ -10,7 +10,7 @@ Easybulb, s`luce, iLight, iBulb, and Kreuzer.
 
 ```json
 {
-	"plugin" : "milight"
+	"plugin" : "milight-reloaded"
 }
 ```
 

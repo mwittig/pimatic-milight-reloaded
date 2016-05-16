@@ -84,12 +84,12 @@ module.exports = (env) ->
         # Check if the mobile-frontend was loaded and get a instance
         mobileFrontend = @framework.pluginManager.getPlugin 'mobile-frontend'
         if mobileFrontend?
-          mobileFrontend.registerAssetFile 'js', 'pimatic-milight/app/milight.coffee'
-          mobileFrontend.registerAssetFile 'css', 'pimatic-milight/app/milight.css'
-          mobileFrontend.registerAssetFile 'html', 'pimatic-milight/app/milight.html'
-          mobileFrontend.registerAssetFile 'js', 'pimatic-milight/app/vendor/async.js'
+          mobileFrontend.registerAssetFile 'js', 'pimatic-milight-reloaded/app/milight.coffee'
+          mobileFrontend.registerAssetFile 'css', 'pimatic-milight-reloaded/app/milight.css'
+          mobileFrontend.registerAssetFile 'html', 'pimatic-milight-reloaded/app/milight.html'
+          mobileFrontend.registerAssetFile 'js', 'pimatic-milight-reloaded/app/vendor/async.js'
         else
-          env.logger.warn 'your plugin could not find the mobile-frontend. No GUI will be available'
+          env.logger.warn 'Plugin could not find the mobile-frontend. No GUI will be available'
 
     # get all ip4 non local networks with /24 submask
     listInterfaces: () ->
