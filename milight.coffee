@@ -50,7 +50,7 @@ module.exports = (env) ->
           base = iface.address.match(/([0-9]+\.[0-9]+\.[0-9]+\.)[0-9]+/)[1]
 
           @framework.deviceManager.discoverMessage(
-            'pimatic-milight', "Scanning #{base}0/24"
+            'pimatic-milight-reloaded', "Scanning #{base}0/24"
           )
 
           Milight.discoverBridges().then (devices) =>
@@ -64,7 +64,7 @@ module.exports = (env) ->
                 ip: device.ip
 
               @framework.deviceManager.discoveredDevice(
-                'pimatic-milight', "#{config.name}", config
+                'pimatic-milight-reloaded', "#{config.name}", config
               )
 
               displayName = 'Milight RGBW Zone'
@@ -75,7 +75,7 @@ module.exports = (env) ->
                 ip: device.ip
 
               @framework.deviceManager.discoveredDevice(
-                'pimatic-milight', "#{config.name}", config
+                'pimatic-milight-reloaded', "#{config.name}", config
               )
         )
       )
@@ -111,155 +111,155 @@ module.exports = (env) ->
         interfaces.push {name: '255.255.255.255/32', address: "255.255.255.255"}
       return interfaces
 
-    class MilightWWCWZone extends env.devices.SwitchActuator
-      template: 'milight-cwww'
+  class MilightWWCWZone extends env.devices.SwitchActuator
+    template: 'milight-cwww'
 
-      constructor: (@config, lastState) ->
-        @debug = milightPlugin.config.debug ? false
-        @base = commons.base @, @config.class
+    constructor: (@config, lastState) ->
+      @debug = milightPlugin.config.debug ? false
+      @base = commons.base @, @config.class
 
-        @name = @config.name
-        @id = @config.id
-        @zoneId = @config.zoneId
-        @actions = _.cloneDeep @actions
-        @actions.brightnessUp =
-          description: "Increases brightness"
-          params: {}
-        @actions.brightnessDown =
-          description: "Decreases brightness"
-          params: {}
-        @actions.cooler =
-          description: "Increases color temperature"
-          params: {}
-        @actions.warmer =
-          description: "Decreases color temperature"
-          params: {}
-        @light = new Milight.MilightController
-          host: @config.ipp
-          port: @config.port
-          broadcast: true
-          delayBetweenCommands: @config.delayBetweenCommands
-          commandRepeat: @config.commandRepeat
-        @commands = if @config.useTwoByteCommands then Milight.commands2 else Milight.commands
-        @_state = lastState?.state?.value or false
-        @_previousState = null
-        super()
-        process.nextTick () =>
-          @changeStateTo @_state
+      @name = @config.name
+      @id = @config.id
+      @zoneId = @config.zoneId
+      @actions = _.cloneDeep @actions
+      @actions.brightnessUp =
+        description: "Increases brightness"
+        params: {}
+      @actions.brightnessDown =
+        description: "Decreases brightness"
+        params: {}
+      @actions.cooler =
+        description: "Increases color temperature"
+        params: {}
+      @actions.warmer =
+        description: "Decreases color temperature"
+        params: {}
+      @light = new Milight.MilightController
+        host: @config.ip
+        port: @config.port
+        broadcast: @config.broadcast ? undefined
+        delayBetweenCommands: @config.delayBetweenCommands
+        commandRepeat: @config.commandRepeat
+      @commands = if @config.useTwoByteCommands then Milight.commands2 else Milight.commands
+      @_state = lastState?.state?.value or false
+      @_previousState = null
+      super()
+      process.nextTick () =>
+        @changeStateTo @_state
 
-      destroy: () ->
-        super()
+    destroy: () ->
+      super()
 
-      _onOffCommand: (newState, options = {}) ->
-        commands = []
-        if newState
-          commands.push @commands.white.on @zoneId
+    _onOffCommand: (newState, options = {}) ->
+      commands = []
+      if newState
+        commands.push @commands.white.on @zoneId
+      else
+        commands.push @commands.white.off @zoneId
+      @_previousState = newState
+      @light.sendCommands commands
+
+    changeStateTo: (state) ->
+      @_setState state
+      if state
+        @_onOffCommand on
+      else
+        @_onOffCommand off
+
+    brightnessUp: () ->
+      @light.sendCommands @commands.white.brightUp()
+
+    brightnessDown: () ->
+      @light.sendCommands @commands.white.brightDown()
+
+    warmer: () ->
+      @light.sendCommands @commands.white.warmer()
+
+    cooler: () ->
+      @light.sendCommands @commands.white.cooler()
+
+
+  class MilightRGBZone extends env.devices.DimmerActuator
+    template: 'milight-rgb'
+
+    constructor: (@config, lastState) ->
+      @debug = milightPlugin.config.debug ? false
+      @base = commons.base @, @config.class
+
+      @name = @config.name
+      @id = @config.id
+      @zoneId = @config.zoneId
+      @addAttribute 'hue',
+        description: "Hue value",
+        type: t.number
+      @actions = _.cloneDeep @actions
+      @actions.changeHueTo =
+        description: "Sets the hue value"
+        params:
+          hue:
+            type: t.number
+      @light = new Milight.MilightController
+        host: @config.ipp
+        port: @config.port
+        broadcast: true
+        delayBetweenCommands: @config.delayBetweenCommands
+        commandRepeat: @config.commandRepeat
+      @commands = if @config.useTwoByteCommands then Milight.commands2 else Milight.commands
+      @_dimlevel = lastState?.dimlevel?.value or 0
+      @_state = unless @_dimlevel is 0 then true else false
+      @_hue = lastState?.hue?.value or 0
+      @_previousState = null
+      super()
+      process.nextTick () =>
+        @changeStateTo @_state
+        @changeHueTo @_hue
+        @changeDimlevelTo @_dimlevel
+
+    destroy: () ->
+      @light.close()
+      super()
+
+    _onOffCommand: (newState, options = {}) ->
+      commands = []
+      if newState
+        commands.push @commands.rgbw.on @zoneId
+        unless newState is @_previousState
+          commands.push @commands.rgbw.hue options.hue ? @_hue
+          commands.push @commands.rgbw.brightness options.brightness ? @_dimlevel
         else
-          commands.push @commands.white.off @zoneId
-        @_previousState = newState
-        @light.sendCommands commands
-
-      changeStateTo: (state) ->
-        @_setState state
-        if state
-          @_onOffCommand on
-        else
-          @_onOffCommand off
-
-      brightnessUp: () ->
-        @light.sendCommands @commands.white.brightUp()
-
-      brightnessDown: () ->
-        @light.sendCommands @commands.white.brightDown()
-
-      warmer: () ->
-        @light.sendCommands @commands.white.warmer()
-
-      cooler: () ->
-        @light.sendCommands @commands.white.cooler()
+          if options.hue?
+            commands.push @commands.rgbw.hue options.hue
+          if options.brightness?
+            commands.push @commands.rgbw.brightness options.brightness
+      else
+        commands.push @commands.rgbw.off @zoneId
+      @_previousState = newState
+      @light.sendCommands commands
 
 
-    class MilightRGBZone extends env.devices.DimmerActuator
-      template: 'milight-rgb'
+    changeDimlevelTo: (dimlevel) ->
+      @_setDimlevel dimlevel
+      if dimlevel > 0
+        @_onOffCommand on,
+          brightness: dimlevel
+      else
+        @_onOffCommand off
 
-      constructor: (@config, lastState) ->
-        @debug = milightPlugin.config.debug ? false
-        @base = commons.base @, @config.class
+    changeStateTo: (state) ->
+      @_setState state
+      if state
+        @_onOffCommand on
+      else
+        @_onOffCommand off
 
-        @name = @config.name
-        @id = @config.id
-        @zoneId = @config.zoneId
-        @addAttribute 'hue',
-          description: "Hue value",
-          type: t.number
-        @actions = _.cloneDeep @actions
-        @actions.changeHueTo =
-          description: "Sets the hue value"
-          params:
-            hue:
-              type: t.number
-        @light = new Milight.MilightController
-          host: @config.ipp
-          port: @config.port
-          broadcast: true
-          delayBetweenCommands: @config.delayBetweenCommands
-          commandRepeat: @config.commandRepeat
-        @commands = if @config.useTwoByteCommands then Milight.commands2 else Milight.commands
-        @_dimlevel = lastState?.dimlevel?.value or 0
-        @_state = unless @_dimlevel is 0 then true else false
-        @_hue = lastState?.hue?.value or 0
-        @_previousState = null
-        super()
-        process.nextTick () =>
-          @changeStateTo @_state
-          @changeHueTo @_hue
-          @changeDimlevelTo @_dimlevel
+    changeHueTo: (hue) ->
+      @base.setAttribute "hue", hue
+      if @_state
+        @_onOffCommand on,
+          hue: hue
 
-      destroy: () ->
-        @light.close()
-        super()
-
-      _onOffCommand: (newState, options = {}) ->
-        commands = []
-        if newState
-          commands.push @commands.rgbw.on @zoneId
-          unless newState is @_previousState
-            commands.push @commands.rgbw.hue options.hue ? @_hue
-            commands.push @commands.rgbw.brightness options.dimlevel ? @_dimlevel
-          else
-            if options.hue?
-              commands.push @commands.rgbw.hue options.hue
-            if options.brightness?
-              commands.push @commands.rgbw.brightness options.brightness
-        else
-          commands.push @commands.rgbw.off @zoneId
-        @_previousState = newState
-        @light.sendCommands commands
-
-
-      changeDimlevelTo: (dimlevel) ->
-        @_setDimlevel dimlevel
-        if dimlevel > 0
-          @_onOffCommand on,
-            brightness: dimlevel
-        else
-          @_onOffCommand off
-
-      changeStateTo: (state) ->
-        @_setState state
-        if state
-          @_onOffCommand on
-        else
-          @_onOffCommand off
-
-      changeHueTo: (hue) ->
-        @base.setAttribute "hue", hue
-        if @_state
-          @_onOffCommand on,
-            hue: hue
-
-      getHue: () ->
-        Promise.resolve @_hue
+    getHue: () ->
+      Promise.resolve @_hue
 
 
   class MilightRGBWZone extends env.devices.DimmerActuator
@@ -366,6 +366,7 @@ module.exports = (env) ->
     changeWhiteTo: (white) ->
       changeFromHue = white and not @_white
       @base.setAttribute "white", white
+      @base.setAttribute "hue", 256
       if changeFromHue
         if @_state
           @_onOffCommand on,
