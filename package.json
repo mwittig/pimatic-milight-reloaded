@@ -8,8 +8,10 @@
   "version": "0.9.0",
   "license": "GPL-2.0",
   "main": "milight",
+  "icon": "assets/images/milight.svg",
   "configSchema": "milight-config-schema.coffee",
   "files": [
+    "assets",
     "milight.coffee",
     "README.md",
     "LICENSE",
