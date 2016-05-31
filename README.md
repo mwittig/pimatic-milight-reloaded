@@ -1,7 +1,7 @@
 # pimatic-milight-reloaded
 
-A pimtaic plugin to control Milight LED lights and its OEM equivalents such as Rocket LED, Limitless LED Applamp, 
-Easybulb, s`luce, iLight, iBulb, and Kreuzer. 
+A pimatic plugin to control Milight LED bulbs and OEM equivalents auch as Rocket LED, Limitless LED Applamp, 
+Easybulb, s`luce, iLight, iBulb, and Kreuzer.
 
 
 ## Configuration
@@ -28,4 +28,4 @@ Easybulb, s`luce, iLight, iBulb, and Kreuzer.
 ```
 ip: the IP/HOST of the wifi box. Reccommended to set static.<br/>
 port: port on the Wifi box. (default 8899, or older: 5000)<br/>
-zoneId: 1 - 4 (for the zone)<br/>
+zoneId: 1 - 4 (for the zone), 0 (for all zones)<br/>
