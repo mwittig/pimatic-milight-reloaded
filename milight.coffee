@@ -201,7 +201,7 @@ module.exports = (env) ->
       @light = new Milight.MilightController
         ip: @config.ip
         port: @config.port
-        broadcast: true
+        broadcast: @config.broadcast ? undefined
         delayBetweenCommands: @config.delayBetweenCommands
         commandRepeat: @config.commandRepeat
       @commands = if @config.useTwoByteCommands then Milight.commands2 else Milight.commands
@@ -292,7 +292,7 @@ module.exports = (env) ->
       @light = new Milight.MilightController
         ip: @config.ip
         port: @config.port
-        broadcast: true
+        broadcast: @config.broadcast ? undefined
         delayBetweenCommands: @config.delayBetweenCommands
         commandRepeat: @config.commandRepeat
       @commands = if @config.useTwoByteCommands then Milight.commands2 else Milight.commands
