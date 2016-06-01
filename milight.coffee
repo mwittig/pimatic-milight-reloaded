@@ -13,7 +13,13 @@ module.exports = (env) ->
   os = require 'os'
   commons = require('pimatic-plugin-commons')(env)
   Milight = require('node-milight-promise');
-
+  deviceConfigTemplates =
+    "MilightWWCWZone":
+      name: "Milight WWCW Zone"
+      class: "MilightWWCWZone"
+    "MilightRGBWZone":
+      name: "Milight RGBW Zone"
+      class: "MilightRGBWZone"
 
   # ###MilightPlugin class
   # Create a class that extends the Plugin class and implements the following functions:
@@ -39,7 +45,7 @@ module.exports = (env) ->
         createCallback: (config, lastState) => new MilightWWCWZone(config, lastState)
       })
       @framework.deviceManager.registerDeviceClass("MilightRGBWZone", {
-        configDef: deviceConfigDef.MilightRGBWZone, 
+        configDef: deviceConfigDef.MilightRGBWZone,
         createCallback: (config, lastState) => new MilightRGBWZone(config, lastState)
       })
 
@@ -53,30 +59,23 @@ module.exports = (env) ->
             'pimatic-milight-reloaded', "Scanning #{base}0/24"
           )
 
-          Milight.discoverBridges().then (devices) =>
-            x = 0
+          Milight.discoverBridges(
+            address: "#{base}255"
+          ).then (devices) =>
             for device in devices
-              displayName = 'Milight WWCW Zone'
-              config = _.cloneDeep
-                class: 'MilightWWCWZone'
-                id: "#{displayName.toLowerCase()}-#{x++}"
-                name:  "#{displayName}@#{device.ip}".replace(/\./g, '-')
-                ip: device.ip
+              for own templateName of deviceConfigTemplates
+                configTemplate = deviceConfigTemplates[templateName]
+                id = @generateDeviceId "#{configTemplate.name.toLowerCase().replace(/\s/g, '-')}"
+                if id?
+                  config = _.cloneDeep
+                    class: configTemplate.class
+                    id: id
+                    name:  "#{configTemplate.name}"
+                    ip: device.ip
 
-              @framework.deviceManager.discoveredDevice(
-                'pimatic-milight-reloaded', "#{config.name}", config
-              )
-
-              displayName = 'Milight RGBW Zone'
-              config = _.cloneDeep
-                class: 'MilightRGBWZone'
-                id: "#{displayName.toLowerCase()}-#{x++}"
-                name:  "#{displayName}@#{device.ip}".replace(/\./g, '-')
-                ip: device.ip
-
-              @framework.deviceManager.discoveredDevice(
-                'pimatic-milight-reloaded', "#{config.name}", config
-              )
+                  @framework.deviceManager.discoveredDevice(
+                    'pimatic-milight-reloaded', "#{config.name}", config
+                  )
         )
       )
 
@@ -90,6 +89,13 @@ module.exports = (env) ->
           mobileFrontend.registerAssetFile 'js', 'pimatic-milight-reloaded/app/vendor/async.js'
         else
           env.logger.warn 'Plugin could not find the mobile-frontend. No GUI will be available'
+
+    generateDeviceId: (prefix) ->
+      for x in [1...1000]
+        result = "#{prefix}-#{x}"
+        matched = @framework.deviceManager.devicesConfig.some (element, iterator) ->
+          element.id is result
+        return result if not matched
 
     # get all ip4 non local networks with /24 submask
     listInterfaces: () ->
