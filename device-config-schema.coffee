@@ -63,5 +63,9 @@ module.exports = {
         description: "Use 2-byte commands if true (default), otherwise use 3-byte commands"
         type: "boolean"
         default: true
+      broadcast:
+        description: "If true use IP broadcast mode, unicast mode is used otherwise"
+        type: "boolean"
+        default: false
   }
 }
