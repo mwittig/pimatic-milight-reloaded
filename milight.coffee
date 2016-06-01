@@ -135,7 +135,7 @@ module.exports = (env) ->
         description: "Decreases color temperature"
         params: {}
       @light = new Milight.MilightController
-        host: @config.ip
+        ip: @config.ip
         port: @config.port
         broadcast: @config.broadcast ? undefined
         delayBetweenCommands: @config.delayBetweenCommands
@@ -199,7 +199,7 @@ module.exports = (env) ->
           hue:
             type: t.number
       @light = new Milight.MilightController
-        host: @config.ipp
+        ip: @config.ip
         port: @config.port
         broadcast: true
         delayBetweenCommands: @config.delayBetweenCommands
@@ -290,7 +290,7 @@ module.exports = (env) ->
           white:
             type: t.boolean
       @light = new Milight.MilightController
-        host: @config.ipp
+        ip: @config.ip
         port: @config.port
         broadcast: true
         delayBetweenCommands: @config.delayBetweenCommands
