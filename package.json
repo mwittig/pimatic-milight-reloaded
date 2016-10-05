@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "node-milight-promise": "^0.0.9",
-    "pimatic-plugin-commons": "^0.8.8"
+    "pimatic-plugin-commons": "^0.9.3"
   },
   "peerDependencies": {
     "pimatic": ">=0.8.0 <1.0.0"
