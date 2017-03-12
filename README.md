@@ -10,14 +10,14 @@ Easybulb, s`luce, iLight, iBulb, and Kreuzer.
 ## Status of Implementation
 
 Since the first release the following features have been implemented:
-* Support for the Milight controller iBix1 and iBox2, including auto-discovery
+* NEW: Support for the Milight controller iBox1 and iBox2, including auto-discovery
 * Improved auto-discovery supporting multi-homed hosts
-* Support for bridge light of the iBox2 controller
-* Milight color action to control color of MilightRGBWZone and MilightBridgeLight. Note, the action currently only 
-  changes the hue value of the light. I can add brightness control, but unfortunately it is not possible to control 
+* NEW: Support for bridge light of the iBox2 controller
+* NEW: Milight color action to control color of MilightRGBWZone and MilightBridgeLight. Note, the action currently only 
+  changes the hue value of the lights. Bbrightness control can be added, but unfortunately it is not possible to control 
   saturation which limits the color rendition, drastically
   
-The next steps are to add actions to control color temperature and brightnessfor MilightWWCWZone and to add support for 
+The next steps are to add actions to control color temperature and brightness for MilightWWCWZone and to add support for 
 the new full color bulbs.
 
 ## Contributions
@@ -60,7 +60,7 @@ MilightRGBWZone is used for the RGB-WW LED bulbs and strip controllers.
       "ip": "192.168.0.77",
       "bridgeVersion": "v6",
       "zoneId": 1
-    }
+}
 ```
 
 The device has the following configuration properties:
@@ -87,14 +87,14 @@ The following predicates and actions are supported:
 MilightWWCWZone is used for the WW-CW LED bulbs and strip controllers. 
 
 ```json
-    {
+{
       "class": "MilightWWCWZone",
       "id": "milight-wwcw-zone-2",
       "name": "Milight WWCW Zone 2",
       "ip": "192.168.0.77",
       "bridgeVersion": "v6",
       "zoneId": 2
-    }
+}
 ```
 
 The device has the following configuration properties:
@@ -119,12 +119,12 @@ The following predicates and actions are supported:
 MilightBridgeLight is used for the bridge light of the iBox2 controller. 
 
 ```json
-    {
+{
           "class": "MilightBridgeLight",
           "id": "milight-v6-bridge-light-1",
           "name": "Milight V6 Bridge Light",
           "ip": "192.168.0.77"
-    }
+}
 ```
 
 The device has the following configuration properties:
