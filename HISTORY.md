@@ -1,5 +1,7 @@
 # Release History
 
+* 20170312, V0.9.5
+    * Fixed packaging
 * 20170312, V0.9.4
     * Implemented basic support for new Milight iBox Wifi controller which use the new V6 protocol
     * Implemented device type MilightBridgeLight to support the light integretd into iBox2
