@@ -11,12 +11,13 @@
   "icon": "assets/images/milight.svg",
   "configSchema": "milight-config-schema.coffee",
   "files": [
+    "app",
     "assets",
+    "devices",
+    "predicates_and_actions",
     "milight.coffee",
     "README.md",
     "LICENSE",
-    "app",
-    "predicates_and_actions",
     "milight-config-schema.coffee",
     "device-config-schema.coffee"
   ],
