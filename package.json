@@ -29,7 +29,9 @@
     "url": "https://github.com/mwittig/pimatic-milight-reloaded/issues"
   },
   "dependencies": {
-    "node-milight-promise": "^0.0.9",
+    "colornames": "^1.1.1",
+    "lodash.uniqby": "^4.7.0",
+    "node-milight-promise": "^0.1.0",
     "pimatic-plugin-commons": "^0.9.3"
   },
   "peerDependencies": {
