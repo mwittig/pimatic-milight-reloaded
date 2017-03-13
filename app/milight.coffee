@@ -11,6 +11,11 @@ $(document).on 'templateinit', (event) ->
       super
 
       @powerSwitch = $(elements).find('.milight-state')
+      state = @getAttribute('state')
+      if state.labels?
+        capitaliseFirstLetter = (s) -> s.charAt(0).toUpperCase() + s.slice(1)
+        @powerSwitch.find('option[value=on]').text(__(capitaliseFirstLetter state.labels[0]))
+        @powerSwitch.find('option[value=off]').text(__(capitaliseFirstLetter state.labels[1]))
       @powerSwitch.flipswitch()
       $(elements).find('.ui-flipswitch').addClass('no-carousel-slide')
 
