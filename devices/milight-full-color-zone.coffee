@@ -28,7 +28,7 @@ module.exports = (env) ->
     _onOffCommand: (newState, options = {}) ->
       commands = []
       if newState
-        commands.push @commands.fullColor.on() unless options.white
+        commands.push @commands.fullColor.on @zoneId unless options.white
         unless newState is @_previousState
           if options.white ? @_white
             commands.push @commands.fullColor.whiteMode @zoneId
@@ -46,6 +46,6 @@ module.exports = (env) ->
           if options.brightness?
             commands.push @commands.fullColor.brightness @zoneId, options.brightness
       else
-        commands.push @commands.fullColor.off()
+        commands.push @commands.fullColor.off @zoneId
       @_previousState = newState
       @light.sendCommands commands
