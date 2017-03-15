@@ -28,38 +28,20 @@ module.exports = (env) ->
       commands = []
       if newState
         commands.push @commands.bridge.on() unless options.white
-        if @isVersion6 then (
-          unless newState is @_previousState
-            if options.white ? @_white
-              commands.push @commands.bridge.whiteMode()
-            else
-              commands.push @commands.bridge.hue options.hue ? @_hue, true
-            commands.push @commands.bridge.brightness options.dimlevel ? @_dimlevel
+        unless newState is @_previousState
+          if options.white ? @_white
+            commands.push @commands.bridge.whiteMode()
           else
-            if options.white
-              commands.push @commands.bridge.whiteMode()
-              commands.push @commands.bridge.brightness options.dimlevel ? @_dimlevel
-            else if options.hue?
-              commands.push @commands.bridge.hue options.hue, true
-            if options.brightness?
-              commands.push @commands.bridge.brightness options.brightness
-        )
-        else (
-          unless newState is @_previousState
-            if options.white ? @_white
-              commands.push @commands.bridge.whiteMode()
-            else
-              commands.push @commands.bridge.hue options.hue ? @_hue
+            commands.push @commands.bridge.hue options.hue ? @_hue, true
+          commands.push @commands.bridge.brightness options.dimlevel ? @_dimlevel
+        else
+          if options.white
+            commands.push @commands.bridge.whiteMode()
             commands.push @commands.bridge.brightness options.dimlevel ? @_dimlevel
-          else
-            if options.white
-              commands.push @commands.bridge.whiteMode()
-              commands.push @commands.bridge.brightness options.dimlevel ? @_dimlevel
-            else if options.hue?
-              commands.push @commands.bridge.hue options.hue
-            if options.brightness?
-              commands.push @commands.bridge.brightness options.brightness
-        )
+          else if options.hue?
+            commands.push @commands.bridge.hue options.hue, true
+          if options.brightness?
+            commands.push @commands.bridge.brightness options.brightness
       else
         commands.push @commands.bridge.off()
       @_previousState = newState
