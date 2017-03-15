@@ -13,12 +13,16 @@ Since the first release the following features have been implemented:
 * NEW: Support for the Milight controller iBox1 and iBox2, including auto-discovery
 * Improved auto-discovery supporting multi-homed hosts
 * NEW: Support for bridge light of the iBox2 controller
-* NEW: Milight color action to control color of MilightRGBWZone and MilightBridgeLight. Note, the action currently only 
-  changes the hue value of the lights. Bbrightness control can be added, but unfortunately it is not possible to control 
-  saturation which limits the color rendition, drastically
+* NEW: Milight color action to control color of MilightRGBWZone, MilightBridgeLight, and MilightFullColorZone. 
+  Note, the action currently only changes the hue value of the lights. Bbrightness control can be added, 
+  but unfortunately it is not possible to control saturation which limits the color rendition, drastically
+* Implemented basic support for V6 full color bulbs (color temperature and saturation control missing to date)
   
-The next steps are to add actions to control color temperature and brightness for MilightWWCWZone and to add support for 
-the new full color bulbs.
+The next steps are as follows:
+* add actions to control color temperature and brightness for MilightWWCWZone 
+* improve the support for the new full color bulbs by adding the missing features, i.e. color temperature 
+  and saturation control
+* provide a customer UI control.
 
 ## Contributions
 
@@ -70,7 +74,7 @@ The device has the following configuration properties:
 | ip                  |          | String  | The IP address if the Wifi controller       |
 | port                | 0        | Number  | The port of the Wifi controller. 0 will automatically select the appropriate port |
 | bridgeVersion       | "legacy" | String  | The protocol version supported by the Wifi bridge: Use 'v6' for iBox1 & iBox2, or 'legacy' for older controllers |
-| zoneId              | 0        | Number  | The Milight zone to control. 0 will control all zone if supported by the controller |
+| zoneId              | 0        | Number  | The Milight zone to control. 0 will control all zones if supported by the controller |
 | delayBetweenCommands| 75 (100) | Number  | The delay time in ms to wait between transmissions, default 75ms. For 'v6' the minimum is 100ms |
 | useTwoByteCommands  | true     | Boolean | Use 2-byte commands if true (default), otherwise use 3-byte commands. Only applicable for 'legacy' protocol |
 | broadcast           | false    | Boolean | If true use IP broadcast mode, use unicast mode is used otherwise |
@@ -104,7 +108,7 @@ The device has the following configuration properties:
 | ip                  |          | String  | The IP address if the Wifi controller       |
 | port                | 0        | Number  | The port of the Wifi controller. 0 will automatically select the appropriate port |
 | bridgeVersion       | "legacy" | String  | The protocol version supported by the Wifi bridge: Use 'v6' for iBox1 & iBox2, or 'legacy' for older controllers |
-| zoneId              | 0        | Number  | The Milight zone to control. 0 will control all zone if supported by the controller |
+| zoneId              | 0        | Number  | The Milight zone to control. 0 will control all zones if supported by the controller |
 | delayBetweenCommands| 75 (100) | Number  | The delay time in ms to wait between transmissions, default 75ms. For 'v6' the minimum is 100ms |
 | useTwoByteCommands  | true     | Boolean | Use 2-byte commands if true (default), otherwise use 3-byte commands. Only applicable for 'legacy' protocol |
 | broadcast           | false    | Boolean | If true use IP broadcast mode, use unicast mode is used otherwise |
@@ -133,6 +137,36 @@ The device has the following configuration properties:
 |:--------------------|:---------|:--------|:--------------------------------------------|
 | ip                  |          | String  | The IP address if the Wifi controller       |
 | port                | 0        | Number  | The port of the Wifi controller. 0 will automatically select the appropriate port |
+| delayBetweenCommands| 75 (100) | Number  | The delay time in ms to wait between transmissions, default 75ms. For 'v6' the minimum is 100ms |
+
+The following predicates and actions are supported:
+* {device} is turned on|off
+* switch {device} on|off
+* toggle {device}
+* dim {device} to {value}, where {Value} is the percentage of brightness (0-100)
+* milight set color {device} to {value}
+
+#### MilightFullColorZone
+
+MilightFullColorZone is used for the full color (RGB WW/CW) lights supported iwth the new iBox controllers. 
+
+```json
+{
+          "class": "MilightFullColorZone",
+          "id": "milight-v6-full-color-light-1",
+          "name": "Milight V6 Full Color Light",
+          "ip": "192.168.0.77",
+          "zoneId": 1 
+}
+```
+
+The device has the following configuration properties:
+
+| Property            | Default  | Type    | Description                                 |
+|:--------------------|:---------|:--------|:--------------------------------------------|
+| ip                  |          | String  | The IP address if the Wifi controller       |
+| port                | 0        | Number  | The port of the Wifi controller. 0 will automatically select the appropriate port |
+| zoneId              | 0        | Number  | The Milight zone to control. 0 will control all zones |
 | delayBetweenCommands| 75 (100) | Number  | The delay time in ms to wait between transmissions, default 75ms. For 'v6' the minimum is 100ms |
 
 The following predicates and actions are supported:

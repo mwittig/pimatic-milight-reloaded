@@ -9,6 +9,10 @@ deviceConfigTemplates =
     name: "Milight V6 Bridge Light"
     class: "MilightBridgeLight"
     v6: true
+  "MilightFullColorZone":
+    name: "Milight V6 Full Color Zone"
+    class: "MilightFullColorZone"
+    v6: true
 
 actionProviders = [
   'milight-color-action'
