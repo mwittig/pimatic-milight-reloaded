@@ -16,6 +16,7 @@ deviceConfigTemplates =
 
 actionProviders = [
   'milight-color-action'
+  'milight-white-action'
 ]
 
 # ##The plugin code
@@ -49,20 +50,6 @@ module.exports = (env) ->
       @base.info("Milight plugin started")
 
       deviceConfigDef = require("./device-config-schema")
-
-#      @framework.deviceManager.registerDeviceClass("MilightWWCWZone", {
-#        configDef: deviceConfigDef.MilightWWCWZone,
-#        createCallback: (config, lastState) => new MilightWWCWZone(config, lastState)
-#      })
-#      @framework.deviceManager.registerDeviceClass("MilightRGBWZone", {
-#        configDef: deviceConfigDef.MilightRGBWZone,
-#        createCallback: (config, lastState) => new MilightRGBWZone(config, lastState)
-#      })
-#      @framework.deviceManager.registerDeviceClass("MilightBridgeLight", {
-#        configDef: deviceConfigDef.MilightBridgeLight,
-#        createCallback: (config, lastState) => new MilightBridgeLight(config, lastState)
-#      })
-
       for own templateName of deviceConfigTemplates
         do (templateName) =>
           device = deviceConfigTemplates[templateName]
