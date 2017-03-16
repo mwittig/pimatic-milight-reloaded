@@ -34,6 +34,7 @@ module.exports = (env) ->
         @device.setColor color
         return Promise.resolve(__("set color #{color}"))
 
+
   class MilightRgbColorActionProvider extends env.actions.ActionProvider
     constructor: (@framework) ->
       super()
