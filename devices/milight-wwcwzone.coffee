@@ -1,5 +1,6 @@
 module.exports = (env) ->
 
+  assert = env.require 'cassert'
   t = env.require('decl-api').types
   Promise = env.require 'bluebird'
   _ = env.require 'lodash'
@@ -12,16 +13,17 @@ module.exports = (env) ->
     constructor: (@config, plugin, lastState) ->
       @debug = plugin.config.debug ? false
       @base = commons.base @, @config.class
+      @intervalTimers = []
 
       @name = @config.name
       @id = @config.id
       @isVersion6 = @config.bridgeVersion is 'v6'
       @zoneId = @config.zoneId
       @actions = _.cloneDeep @actions
-      @actions.brightnessUp =
+      @actions.brighter =
         description: "Increases brightness"
         params: {}
-      @actions.brightnessDown =
+      @actions.darker =
         description: "Decreases brightness"
         params: {}
       @actions.cooler =
@@ -52,6 +54,8 @@ module.exports = (env) ->
 
     destroy: () ->
       @light.close()
+      @intervalTimers.forEach (element, index) =>
+        clearInterval element
       super()
 
     _onOffCommand: (newState, options = {}) ->
@@ -70,10 +74,10 @@ module.exports = (env) ->
       else
         @_onOffCommand off
 
-    brightnessUp: () ->
+    brighter: () ->
       @light.sendCommands @commands.white.brightUp @zoneId
 
-    brightnessDown: () ->
+    darker: () ->
       @light.sendCommands @commands.white.brightDown @zoneId
 
     warmer: () ->
@@ -81,4 +85,32 @@ module.exports = (env) ->
 
     cooler: () ->
       @light.sendCommands @commands.white.cooler @zoneId
+
+    nightMode: () ->
+      @light.sendCommands @commands.white.nightMode @zoneId
+
+    maxBright: () ->
+      @light.sendCommands @commands.white.maxBright @zoneId
+
+    setAction: (action, repeat, delay) ->
+      assert not isNaN repeat
+      assert not isNaN delay
+      @base.debug "white action requested: #{action} repeat #{repeat} delay #{delay}"
+      intervalId = null
+      
+      command = () =>
+        @base.debug "action (#{repeat})"
+        @[action]()
+        repeat -= 1
+        if repeat is 0 and intervalId?
+          clearInterval intervalId 
+          @intervalTimers.forEach (element, index) =>
+            if _.isEqual(intervalId, element)
+              @intervalTimers.splice index, 1
+          @base.debug "finished"
+
+      command()
+      unless repeat is 0
+        intervalId = setInterval command, delay
+        @intervalTimers.push intervalId
 
