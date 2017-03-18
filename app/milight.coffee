@@ -89,17 +89,17 @@ $(document).on 'templateinit', (event) ->
       else
         @device.rest.turnOff {}, global: no
 
-    _brightnessUp: () ->
+    _brighter: () ->
       if @state() is 'off'
         @powerSwitch.val 'on'
         @_setState 'on'
-      @device.rest.brightnessUp {}, global: no
+      @device.rest.brighter {}, global: no
 
-    _brightnessDown: () ->
+    _darker: () ->
       if @state() is 'off'
         @powerSwitch.val 'on'
         @_setState 'on'
-      @device.rest.brightnessDown {}, global: no
+      @device.rest.darker {}, global: no
 
     _warmer: () ->
       if @state() is 'off'
