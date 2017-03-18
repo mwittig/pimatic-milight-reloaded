@@ -92,17 +92,17 @@ module.exports = (env) ->
     maxBright: () ->
       @light.sendCommands @commands.white.maxBright @zoneId
 
-    setAction: (action, repeat, delay) ->
-      assert not isNaN repeat
+    setAction: (action, count, delay) ->
+      assert not isNaN count
       assert not isNaN delay
-      @base.debug "white action requested: #{action} repeat #{repeat} delay #{delay}"
+      @base.debug "white action requested: #{action} count #{count} delay #{delay}"
       intervalId = null
       
       command = () =>
-        @base.debug "action (#{repeat})"
+        @base.debug "action (#{count})"
         @[action]()
-        repeat -= 1
-        if repeat is 0 and intervalId?
+        count -= 1
+        if count is 0 and intervalId?
           clearInterval intervalId 
           @intervalTimers.forEach (element, index) =>
             if _.isEqual(intervalId, element)
@@ -110,7 +110,7 @@ module.exports = (env) ->
           @base.debug "finished"
 
       command()
-      unless repeat is 0
+      unless count is 0
         intervalId = setInterval command, delay
         @intervalTimers.push intervalId
 

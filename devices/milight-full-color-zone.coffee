@@ -44,7 +44,7 @@ module.exports = (env) ->
           else
             commands.push @commands.fullColor.hue @zoneId, options.hue ? @_hue, true
             commands.push @commands.fullColor.saturation @zoneId, 0
-            commands.push @commands.fullColor.brightness @zoneId, options.dimlevel ? @_dimlevel
+          commands.push @commands.fullColor.brightness @zoneId, options.dimlevel ? @_dimlevel
           if options.brightness?
             commands.push @commands.fullColor.brightness @zoneId, options.brightness
         else

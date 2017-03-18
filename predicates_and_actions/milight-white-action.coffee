@@ -7,7 +7,7 @@ module.exports = (env) ->
   commons = require('pimatic-plugin-commons')(env)
 
   class MilightWhiteActionHandler extends env.actions.ActionHandler
-    constructor: (@provider, @device, @action, @timesExecuteTokens, @delayTokens) ->
+    constructor: (@provider, @device, @action, @countTokens, @delayTokens) ->
       @variableManager = @provider.framework.variableManager
       @base = commons.base @, 'MilightWhiteActionHandler'
       super()
@@ -18,21 +18,21 @@ module.exports = (env) ->
 
     executeAction: (simulate) =>
       Promise.all([
-        @variableManager.evaluateNumericExpression(@timesExecuteTokens)
+        @variableManager.evaluateNumericExpression(@countTokens)
         @variableManager.evaluateNumericExpression(@delayTokens)
       ]).then (values) =>
-        timesExecute = @base.normalize values[0], 1, 10
+        count = @base.normalize values[0], 1, 10
         delay = @base.normalize values[1], 0, 10000
-        @setAction timesExecute, delay, simulate
+        @setAction count, delay, simulate
 
-    setAction: (timesExecute, delay, simulate) =>
+    setAction: (count, delay, simulate) =>
       if simulate
-        return Promise.resolve __("would perform milight set white %s %s timesExecute %s delay %s",
-          @action, @device.name, timesExecute, delay)
+        return Promise.resolve __("would perform milight set white %s %s count %s delay %s",
+          @action, @device.name, count, delay)
       else
-        @device.setAction @action, timesExecute, delay
-        return Promise.resolve __("milight set %s %s timesExecute %s delay %s",
-          @action, @device.name, timesExecute, delay)
+        @device.setAction @action, count, delay
+        return Promise.resolve __("milight set %s %s count %s delay %s",
+          @action, @device.name, count, delay)
 
 
   class MilightWhiteColorTempActionProvider extends env.actions.ActionProvider
@@ -51,7 +51,7 @@ module.exports = (env) ->
       variable = null
 
       action = 'cooler'
-      timesExecuteTokens = [1]
+      countTokens = [1]
       delayTokens = [0]
 
       # Try to match the input string with: set ->
@@ -73,8 +73,8 @@ module.exports = (env) ->
           action = m.getFullMatch().split(' ')[2]
 
           unless _.includes(['nightMode', 'maxBright'], action)
-            next = m.match(' execute ').matchNumericExpression (m, tokens) =>
-              timesExecuteTokens = tokens
+            next = m.match(' count ').matchNumericExpression (m, tokens) =>
+              countTokens = tokens
             if next.hadMatch() then m = next
 
             next = m.match(' delay ').matchNumericExpression (m, tokens) =>
@@ -89,7 +89,7 @@ module.exports = (env) ->
         return {
           token: match
           nextInput: input.substring(match.length)
-          actionHandler: new MilightWhiteActionHandler(@, device, action, timesExecuteTokens, delayTokens)
+          actionHandler: new MilightWhiteActionHandler(@, device, action, countTokens, delayTokens)
         }
       else
         return null

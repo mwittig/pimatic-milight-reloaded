@@ -5,7 +5,7 @@
 [![Dependency Status](https://david-dm.org/mwittig/pimatic-milight-reloaded.svg)](https://david-dm.org/mwittig/pimatic-milight-reloaded)
 
 A pimatic plugin to control Milight LED bulbs and OEM equivalents auch as Rocket LED, Limitless LED Applamp, 
-Easybulb, s`luce, iLight, iBulb, and Kreuzer.
+Easybulb, s`luce, iLight, iBulb, and Kreuzer. 
 
 ## Status of Implementation
 
@@ -14,7 +14,7 @@ Since the first release the following features have been implemented:
 * Improved auto-discovery supporting multi-homed hosts
 * Support for bridge light of the iBox2 controller
 * Milight color action to control color of MilightRGBWZone, MilightBridgeLight, and MilightFullColorZone. 
-  Note, the action currently only changes the hue value of the lights. Bbrightness control can be added, 
+  Note, the action currently only changes the hue value of the lights. Brightness control can be added, 
   but unfortunately it is not possible to control saturation which limits the color rendition, drastically
 * NEW: Implemented basic support for V6 full color bulbs (color temperature and saturation control missing to date)
 * NEW: Implemented actions to control color temperature and brightness for MilightWWCWZone
@@ -23,7 +23,7 @@ The next steps are as follows:
 * Improve the support for the new full color bulbs by adding the missing features, i.e. color temperature 
   and saturation control
 * Provide a custom UI control
-* Provide more action for other stuff like effect mode control and advanced dimming with fadeing
+* Provide more action for other stuff like effect mode control and advanced dimming with fading
 
 ## Contributions
 
@@ -118,15 +118,15 @@ The following predicates and actions are supported:
 * {device} is turned on|off
 * switch {device} on|off
 * toggle {device}
-* milight set warmer {device} [ execute {times} [ delay {milliseconds} ]], which increases color temperature
-* milight set cooler {device} [ execute {times} [ delay {milliseconds} ]], which decreases color temperature
-* milight set brighter {device} [ execute {times} [ delay {milliseconds} ]]
-* milight set darker {device} [ execute {times} [ delay {milliseconds} ]]
+* milight set warmer {device} [ count {times} [ delay {milliseconds} ]], which increases color temperature
+* milight set cooler {device} [ count {times} [ delay {milliseconds} ]], which decreases color temperature
+* milight set brighter {device} [ count {times} [ delay {milliseconds} ]]
+* milight set darker {device} [ count {times} [ delay {milliseconds} ]]
 * milight set maxBright {device}
 * milight set nightMode {device}
 
-The optional `execute` parameter for milight actions is used to specify how often the command shall be 
- executed within a value range from 1 to 10. The optional delay parameter specifies the time in milliseconds between 
+The optional `count` parameter for milight actions is used to specify how often the command shall be 
+ executed within a value range from 1 to 10. The optional `delay` parameter specifies the time in milliseconds between 
  repetitions ranging within a value range from 0 to 10000. Invalid values will be silently transformed to the closest
  valid value. Note, the night mode can be turned off by either setting maximum brightness (maxBright) or by switching 
  the device on. In both cases the maximum brightness will be set.
@@ -188,7 +188,7 @@ The following predicates and actions are supported:
 * toggle {device}
 * dim {device} to {value}, where {Value} is the percentage of brightness (0-100)
 * milight set color {device} to {value}
-
+  
 ## History
 
 See [Release History](https://github.com/mwittig/pimatic-milight-reloaded/blob/master/HISTORY.md).
