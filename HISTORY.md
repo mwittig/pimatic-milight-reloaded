@@ -1,10 +1,16 @@
 # Release History
 
+* 20170318, V0.9.6
+    * Implemented basic support for V6 full color bulbs (color temperature and saturation missing to date)
+    * Implemented actions to control white color temperature and brightness for MilightWWCWZone
+    * Improved MilightBridgeLight implementation
+    * Changed UI for WW/CW color temperature: swapped functions linked to plus and minus buttons
+    * Added Language localization support for WW/CW power switch
 * 20170312, V0.9.5
     * Fixed packaging
 * 20170312, V0.9.4
     * Implemented basic support for new Milight iBox Wifi controller which use the new V6 protocol
-    * Implemented device type MilightBridgeLight to support the light integretd into iBox2
+    * Implemented device type MilightBridgeLight to support the light integrated into iBox2
     * Implemented milight color action for MilightRGBWZone and MilightBridgeLight
     * Updated dependencies
     * Refactoring and cleanup
