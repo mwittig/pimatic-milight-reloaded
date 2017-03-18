@@ -23,7 +23,7 @@ The next steps are as follows:
 * Improve the support for the new full color bulbs by adding the missing features, i.e. color temperature 
   and saturation control
 * Provide a custom UI control
-* Provide more action for other stuff like effect mode control and advanced dimming with fading
+* Provide more actions for other stuff like effect mode control and advanced dimming with fading
 
 ## Contributions
 
