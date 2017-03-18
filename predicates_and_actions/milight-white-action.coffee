@@ -35,7 +35,7 @@ module.exports = (env) ->
           @action, @device.name, count, delay)
 
 
-  class MilightWhiteColorTempActionProvider extends env.actions.ActionProvider
+  class MilightWhiteActionProvider extends env.actions.ActionProvider
     constructor: (@framework) ->
       super()
 
@@ -94,4 +94,4 @@ module.exports = (env) ->
       else
         return null
 
-  return MilightWhiteColorTempActionProvider
+  return MilightWhiteActionProvider
