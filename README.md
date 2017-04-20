@@ -16,8 +16,9 @@ Since the first release the following features have been implemented:
 * Milight color action to control color of MilightRGBWZone, MilightBridgeLight, and MilightFullColorZone. 
   Note, the action currently only changes the hue value of the lights. Brightness control can be added, 
   but unfortunately it is not possible to control saturation which limits the color rendition, drastically
-* NEW: Implemented basic support for V6 full color bulbs (color temperature and saturation control missing to date)
-* NEW: Implemented actions to control color temperature and brightness for MilightWWCWZone
+* Implemented basic support for V6 full color bulbs (color temperature and saturation control missing to date)
+* Implemented actions to control color temperature and brightness for MilightWWCWZone
+* NEW: Implemented blink action to let the lights flash for given number of times
   
 The next steps are as follows:
 * Improve the support for the new full color bulbs by adding the missing features, i.e. color temperature 
@@ -86,6 +87,12 @@ The following predicates and actions are supported:
 * toggle {device}
 * dim {device} to {value}, where {Value} is the percentage of brightness (0-100)
 * milight set color {device} to {value}
+* milight set blink {device} [ count {times} [ delay {milliseconds} ]]
+
+The optional `count` parameter for for the blink action is used to specify how often the command shall be 
+ executed within a value range from 1 to 10. The optional `delay` parameter specifies the time in milliseconds between 
+ repetitions ranging within a value range from 0 to 10000. Invalid values will be silently transformed to the closest
+ valid value.
 
 #### MilightWWCWZone
 
@@ -122,6 +129,7 @@ The following predicates and actions are supported:
 * milight set cooler {device} [ count {times} [ delay {milliseconds} ]], which decreases color temperature
 * milight set brighter {device} [ count {times} [ delay {milliseconds} ]]
 * milight set darker {device} [ count {times} [ delay {milliseconds} ]]
+* milight set blink {device} [ count {times} [ delay {milliseconds} ]]
 * milight set maxBright {device}
 * milight set nightMode {device}
 
@@ -158,6 +166,12 @@ The following predicates and actions are supported:
 * toggle {device}
 * dim {device} to {value}, where {Value} is the percentage of brightness (0-100)
 * milight set color {device} to {value}
+* milight set blink {device} [ count {times} [ delay {milliseconds} ]]
+
+The optional `count` parameter for for the blink action is used to specify how often the command shall be 
+ executed within a value range from 1 to 10. The optional `delay` parameter specifies the time in milliseconds between 
+ repetitions ranging within a value range from 0 to 10000. Invalid values will be silently transformed to the closest
+ valid value.
 
 #### MilightFullColorZone
 
@@ -188,6 +202,12 @@ The following predicates and actions are supported:
 * toggle {device}
 * dim {device} to {value}, where {Value} is the percentage of brightness (0-100)
 * milight set color {device} to {value}
+* milight set blink {device} [ count {times} [ delay {milliseconds} ]]
+
+The optional `count` parameter for for the blink action is used to specify how often the command shall be 
+ executed within a value range from 1 to 10. The optional `delay` parameter specifies the time in milliseconds between 
+ repetitions ranging within a value range from 0 to 10000. Invalid values will be silently transformed to the closest
+ valid value.
   
 ## History
 

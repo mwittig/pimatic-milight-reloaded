@@ -13,7 +13,6 @@ module.exports = (env) ->
     constructor: (@config, plugin, lastState) ->
       @debug = plugin.config.debug ? false
       @base = commons.base @, @config.class
-      @intervalTimers = []
 
       @name = @config.name
       @id = @config.id
@@ -54,8 +53,7 @@ module.exports = (env) ->
 
     destroy: () ->
       @light.close()
-      @intervalTimers.forEach (element, index) =>
-        clearInterval element
+      commons.clearAllPeriodicTimers()
       super()
 
     _onOffCommand: (newState, options = {}) ->
@@ -92,25 +90,22 @@ module.exports = (env) ->
     maxBright: () ->
       @light.sendCommands @commands.white.maxBright @zoneId
 
+    blink: () ->
+      @toggle();
+
     setAction: (action, count, delay) ->
       assert not isNaN count
       assert not isNaN delay
       @base.debug "white action requested: #{action} count #{count} delay #{delay}"
       intervalId = null
-      
+      count = count *2 if action is "blink"
+
       command = () =>
         @base.debug "action (#{count})"
         @[action]()
         count -= 1
         if count is 0 and intervalId?
-          clearInterval intervalId 
-          @intervalTimers.forEach (element, index) =>
-            if _.isEqual(intervalId, element)
-              @intervalTimers.splice index, 1
+          commons.clearPeriodicTimer intervalId
           @base.debug "finished"
 
-      command()
-      unless count is 0
-        intervalId = setInterval command, delay
-        @intervalTimers.push intervalId
-
+      intervalId = commons.setPeriodicTimer command, delay

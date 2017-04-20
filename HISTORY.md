@@ -1,5 +1,8 @@
 # Release History
 
+* nex release
+    * Implemented blink action to let the lights flash for given number of times
+     
 * 20170318, V0.9.6
     * Implemented basic support for V6 full color bulbs (color temperature and saturation missing to date)
     * Implemented actions to control white color temperature and brightness for MilightWWCWZone

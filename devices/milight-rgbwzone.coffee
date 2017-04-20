@@ -1,5 +1,6 @@
 module.exports = (env) ->
 
+  assert = env.require 'cassert'
   t = env.require('decl-api').types
   Promise = env.require 'bluebird'
   _ = env.require 'lodash'
@@ -67,6 +68,7 @@ module.exports = (env) ->
 
     destroy: () ->
       @light.close()
+      commons.clearAllPeriodicTimers()
       super()
 
     _onOffCommand: (newState, options = {}) ->
@@ -176,3 +178,23 @@ module.exports = (env) ->
         @base.debug "setting hue to: #{hue}"
         hue = Milight.helper.rgbToHue.apply Milight.helper, rgb
         @changeHueTo hue
+
+    blink: () ->
+      @toggle();
+
+    setAction: (action, count, delay) ->
+      assert not isNaN count
+      assert not isNaN delay
+      @base.debug "white action requested: #{action} count #{count} delay #{delay}"
+      intervalId = null
+      count = count *2 if action is "blink"
+
+      command = () =>
+        @base.debug "action (#{count})"
+        @[action]()
+        count -= 1
+        if count is 0 and intervalId?
+          commons.clearPeriodicTimer intervalId
+          @base.debug "finished"
+
+      intervalId = commons.setPeriodicTimer command, delay

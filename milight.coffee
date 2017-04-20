@@ -17,6 +17,7 @@ deviceConfigTemplates =
 actionProviders = [
   'milight-color-action'
   'milight-white-action'
+  'milight-blink-action'
 ]
 
 # ##The plugin code

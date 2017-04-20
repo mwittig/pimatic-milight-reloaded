@@ -1,6 +1,7 @@
 
 module.exports = (env) ->
 
+  assert = env.require 'cassert'
   t = env.require('decl-api').types
   Promise = env.require 'bluebird'
   _ = env.require 'lodash'
@@ -22,6 +23,7 @@ module.exports = (env) ->
 
     destroy: () ->
       @light.close()
+      commons.clearAllPeriodicTimers()
       super()
 
     _onOffCommand: (newState, options = {}) ->
@@ -46,3 +48,23 @@ module.exports = (env) ->
         commands.push @commands.bridge.off()
       @_previousState = newState
       @light.sendCommands commands
+
+    blink: () ->
+      @toggle();
+
+    setAction: (action, count, delay) ->
+      assert not isNaN count
+      assert not isNaN delay
+      @base.debug "white action requested: #{action} count #{count} delay #{delay}"
+      intervalId = null
+      count = count *2 if action is "blink"
+
+      command = () =>
+        @base.debug "action (#{count}) - #{new Date().valueOf()}"
+        @[action]()
+        count -= 1
+        if count is 0 and intervalId?
+          commons.clearPeriodicTimer intervalId
+          @base.debug "finished"
+
+      intervalId = commons.setPeriodicTimer command, delay
