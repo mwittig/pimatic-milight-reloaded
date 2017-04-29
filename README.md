@@ -1,5 +1,7 @@
 # pimatic-milight-reloaded
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mwittig/pimatic-milight-reloaded.svg)](https://greenkeeper.io/)
+
 [![Npm Version](https://badge.fury.io/js/pimatic-milight-reloaded.svg)](http://badge.fury.io/js/pimatic-milight-reloaded)
 [![Build Status](https://travis-ci.org/mwittig/pimatic-milight-reloaded.svg?branch=master)](https://travis-ci.org/mwittig/pimatic-milight-reloaded)
 [![Dependency Status](https://david-dm.org/mwittig/pimatic-milight-reloaded.svg)](https://david-dm.org/mwittig/pimatic-milight-reloaded)
