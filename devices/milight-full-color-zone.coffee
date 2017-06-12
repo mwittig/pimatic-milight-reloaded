@@ -28,6 +28,22 @@ module.exports = (env) ->
         params:
           hue:
             type: t.number
+
+      @actions.effectMode =
+        description: "Set effect mode"
+        params:
+          mode:
+            type: t.number
+      @actions.effectNext =
+        description: "Switch to next effect mode"
+        params: {}
+      @actions.effectFaster =
+        description: "Increase effect speed"
+        params: {}
+      @actions.effectSlower =
+        description: "Decrease effect speed"
+        params: {}
+
       @_saturation = lastState?.saturation?.value or 0
       super @config, plugin, lastState, true
 
@@ -94,13 +110,25 @@ module.exports = (env) ->
             saturation: hsv[1]
             dimlevel: hsv[2]
 
+    effectMode: (mode) ->
+      @light.sendCommands @commands.fullColor.effectMode @zoneId, mode
+
+    effectNext: () ->
+      @light.sendCommands @commands.fullColor.effectModeNext @zoneId
+
+    effectFaster: () ->
+      @light.sendCommands @commands.fullColor.effectSpeedUp @zoneId
+
+    effectSlower: () ->
+      @light.sendCommands @commands.fullColor.effectSpeedDown @zoneId
+
     blink: () ->
       @toggle();
 
     setAction: (action, count, delay) ->
       assert not isNaN count
       assert not isNaN delay
-      @base.debug "white action requested: #{action} count #{count} delay #{delay}"
+      @base.debug "action requested: #{action} count #{count} delay #{delay}"
       intervalId = null
       count = count *2 if action is "blink"
 

@@ -40,6 +40,20 @@ module.exports = (env) ->
         params:
           colorCode:
             type: t.string
+      @actions.effectMode =
+        description: "Set effect mode"
+        params:
+          mode:
+            type: t.number
+      @actions.effectNext =
+        description: "Switch to next effect mode"
+        params: {}
+      @actions.effectFaster =
+        description: "Increase effect speed"
+        params: {}
+      @actions.effectSlower =
+        description: "Decrease effect speed"
+        params: {}
       delayBetweenCommands = @config.delayBetweenCommands
       if @isVersion6
         delayBetweenCommands = @base.normalize delayBetweenCommands, 100
@@ -179,13 +193,28 @@ module.exports = (env) ->
         hue = Milight.helper.rgbToHue.apply Milight.helper, rgb
         @changeHueTo hue
 
+    effectMode: (mode) ->
+      if @isVersion6
+        @light.sendCommands @commands.rgbw.effectMode @zoneId, mode
+      else
+        @base.error "effectMode command not supported by legacy Milight controller"
+
+    effectNext: () ->
+      @light.sendCommands @commands.rgbw.effectModeNext @zoneId
+
+    effectFaster: () ->
+      @light.sendCommands @commands.rgbw.effectSpeedUp @zoneId
+
+    effectSlower: () ->
+      @light.sendCommands @commands.rgbw.effectSpeedDown @zoneId
+
     blink: () ->
       @toggle();
 
     setAction: (action, count, delay) ->
       assert not isNaN count
       assert not isNaN delay
-      @base.debug "white action requested: #{action} count #{count} delay #{delay}"
+      @base.debug "action requested: #{action} count #{count} delay #{delay}"
       intervalId = null
       count = count *2 if action is "blink"
 

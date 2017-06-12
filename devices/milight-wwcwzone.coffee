@@ -31,6 +31,27 @@ module.exports = (env) ->
       @actions.warmer =
         description: "Decreases color temperature"
         params: {}
+      @actions.nightMode =
+        description: "Enables the night mode"
+        params: {}
+      @actions.maxBright =
+        description: "Sets brightness to maximum"
+        params: {}
+      @actions.effectMode =
+        description: "Set effect mode"
+        params:
+          mode:
+            type: t.number
+      @actions.effectNext =
+        description: "Switch to next effect mode"
+        params: {}
+      @actions.effectFaster =
+        description: "Increase effect speed"
+        params: {}
+      @actions.effectSlower =
+        description: "Decrease effect speed"
+        params: {}
+
       delayBetweenCommands = @config.delayBetweenCommands
       if @isVersion6
         delayBetweenCommands = @base.normalize delayBetweenCommands, 100
@@ -90,13 +111,28 @@ module.exports = (env) ->
     maxBright: () ->
       @light.sendCommands @commands.white.maxBright @zoneId
 
+    effectMode: (mode) ->
+      if @isVersion6
+        @light.sendCommands @commands.white.effectMode @zoneId, mode
+      else
+        @base.error "effectMode command not supported by legacy Milight controller"
+
+    effectNext: () ->
+      @light.sendCommands @commands.white.effectModeNext @zoneId
+
+    effectFaster: () ->
+      @light.sendCommands @commands.white.effectSpeedUp @zoneId
+
+    effectSlower: () ->
+      @light.sendCommands @commands.white.effectSpeedDown @zoneId
+
     blink: () ->
       @toggle();
 
     setAction: (action, count, delay) ->
       assert not isNaN count
       assert not isNaN delay
-      @base.debug "white action requested: #{action} count #{count} delay #{delay}"
+      @base.debug "action requested: #{action} count #{count} delay #{delay}"
       intervalId = null
       count = count *2 if action is "blink"
 

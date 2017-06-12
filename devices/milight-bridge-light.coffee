@@ -19,6 +19,21 @@ module.exports = (env) ->
       @name = @config.name
       @id = @config.id
       @isVersion6 = true
+      @actions = _.cloneDeep @actions
+      @actions.effectMode =
+        description: "Set effect mode"
+        params:
+          mode:
+            type: t.number
+      @actions.effectNext =
+        description: "Switch to next effect mode"
+        params: {}
+      @actions.effectFaster =
+        description: "Increase effect speed"
+        params: {}
+      @actions.effectSlower =
+        description: "Decrease effect speed"
+        params: {}
       super @config, plugin, lastState, true
 
     destroy: () ->
@@ -49,13 +64,25 @@ module.exports = (env) ->
       @_previousState = newState
       @light.sendCommands commands
 
+    effectMode: (mode) ->
+      @light.sendCommands @commands.bridge.effectMode mode
+
+    effectNext: () ->
+      @light.sendCommands @commands.bridge.effectModeNext()
+
+    effectFaster: () ->
+      @light.sendCommands @commands.bridge.effectSpeedUp()
+
+    effectSlower: () ->
+      @light.sendCommands @commands.bridge.effectSpeedDown()
+
     blink: () ->
       @toggle();
 
     setAction: (action, count, delay) ->
       assert not isNaN count
       assert not isNaN delay
-      @base.debug "white action requested: #{action} count #{count} delay #{delay}"
+      @base.debug "action requested: #{action} count #{count} delay #{delay}"
       intervalId = null
       count = count *2 if action is "blink"
 

@@ -6,10 +6,10 @@ module.exports = (env) ->
   M = env.matcher
   commons = require('pimatic-plugin-commons')(env)
 
-  class MilightBlinkActionHandler extends env.actions.ActionHandler
-    constructor: (@provider, @device, @action, @countTokens, @delayTokens) ->
+  class MilightEffectActionHandler extends env.actions.ActionHandler
+    constructor: (@provider, @device, @action, @countTokens, @delayTokens, @modeTokens) ->
       @variableManager = @provider.framework.variableManager
-      @base = commons.base @, 'MilightBlinkActionHandler'
+      @base = commons.base @, 'MilightEffectActionHandler'
       super()
 
     setup: ->
@@ -20,10 +20,15 @@ module.exports = (env) ->
       Promise.all([
         @variableManager.evaluateNumericExpression(@countTokens)
         @variableManager.evaluateNumericExpression(@delayTokens)
+        @variableManager.evaluateNumericExpression(@modeTokens)
       ]).then (values) =>
         count = @base.normalize values[0], 1, 10
         delay = @base.normalize values[1], 0, 10000
-        @setAction count, delay, simulate
+        mode = @base.normalize values[2], 1, 9
+        if @action is 'effectMode'
+          @setModeAction mode, simulate
+        else
+          @setAction count, delay, simulate
 
     setAction: (count, delay, simulate) =>
       if simulate
@@ -34,15 +39,25 @@ module.exports = (env) ->
         return Promise.resolve __("milight set %s %s count %s delay %s",
           @action, @device.name, count, delay)
 
+    setModeAction: (mode, simulate) =>
+      if simulate
+        return Promise.resolve __("would perform milight set %s %s mode %s",
+          @action, @device.name, mode)
+      else
+        @device.effectMode mode
+        return Promise.resolve __("milight set %s %s mode %s",
+          @action, @device.name, mode)
 
-  class MilightBlinkActionProvider extends env.actions.ActionProvider
+
+  class MilightEffectActionProvider extends env.actions.ActionProvider
     constructor: (@framework) ->
       super()
 
     parseAction: (input, context) =>
+
       applicableMilightDevices = _(@framework.deviceManager.devices).values().filter(
         (device) => _.includes [
-          'MilightWWCWZone', 'MilightRGBWZone', 'MilightBridgeLight', 'MilightFullColorZone'
+          'MilightRGBWZone', 'MilightBridgeLight', 'MilightFullColorZone'
         ], device.config.class
       ).value()
       device = null
@@ -50,14 +65,18 @@ module.exports = (env) ->
       match = null
       variable = null
 
-      action = 'blink'
+      action = 'effectMode'
       countTokens = [5]
       delayTokens = [1000]
+      modeTokens = [1]
 
       # Try to match the input string with: set ->
       M(input, context)
       .match([
-        'milight set blink '
+        'milight set effectMode '
+        'milight set effectNext '
+        'milight set effectFaster '
+        'milight set effectSlower '
       ])
       .matchDevice applicableMilightDevices, (m, d) =>
         # Already had a match with another device?
@@ -67,13 +86,18 @@ module.exports = (env) ->
         device = d
         action = m.getFullMatch().split(' ')[2]
 
-        next = m.match(' count ').matchNumericExpression (m, tokens) =>
-          countTokens = tokens
-        if next.hadMatch() then m = next
+        unless _.includes(['effectMode'], action)
+          next = m.match(' count ').matchNumericExpression (m, tokens) =>
+            countTokens = tokens
+          if next.hadMatch() then m = next
 
-        next = m.match(' delay ').matchNumericExpression (m, tokens) =>
-          delayTokens = tokens
-        if next.hadMatch() then m = next
+          next = m.match(' delay ').matchNumericExpression (m, tokens) =>
+            delayTokens = tokens
+          if next.hadMatch() then m = next
+        else
+          next = m.match(' mode ').matchNumericExpression (m, tokens) =>
+            modeTokens = tokens
+          if next.hadMatch() then m = next
 
         match = m.getFullMatch()
 
@@ -83,9 +107,9 @@ module.exports = (env) ->
         return {
           token: match
           nextInput: input.substring(match.length)
-          actionHandler: new MilightBlinkActionHandler(@, device, action, countTokens, delayTokens)
+          actionHandler: new MilightEffectActionHandler(@, device, action, countTokens, delayTokens, modeTokens)
         }
       else
         return null
 
-  return MilightBlinkActionProvider
+  return MilightEffectActionProvider

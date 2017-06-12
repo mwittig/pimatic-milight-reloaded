@@ -17,6 +17,7 @@ deviceConfigTemplates =
 actionProviders = [
   'milight-color-action'
   'milight-white-action'
+  'milight-effect-action'
   'milight-blink-action'
 ]
 

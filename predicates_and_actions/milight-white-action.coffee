@@ -27,7 +27,7 @@ module.exports = (env) ->
 
     setAction: (count, delay, simulate) =>
       if simulate
-        return Promise.resolve __("would perform milight set white %s %s count %s delay %s",
+        return Promise.resolve __("would perform milight set %s %s count %s delay %s",
           @action, @device.name, count, delay)
       else
         @device.setAction @action, count, delay

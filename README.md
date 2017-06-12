@@ -18,13 +18,14 @@ Since the first release the following features have been implemented:
   but unfortunately it is not possible to control saturation which limits the color rendition, drastically
 * Implemented basic support for V6 full color bulbs (color temperature and saturation control missing to date)
 * Implemented actions to control color temperature and brightness for MilightWWCWZone
-* NEW: Implemented blink action to let the lights flash for given number of times
+* Implemented blink action to let the lights flash for given number of times
+* NEW: Implemented actions control effect modes for MilightRGBWZone, MilightBridgeLight, and MilightFullColorZone
   
 The next steps are as follows:
 * Improve the support for the new full color bulbs by adding the missing features, i.e. color temperature 
   and saturation control
 * Provide a custom UI control
-* Provide more actions for other stuff like effect mode control and advanced dimming with fading
+* Provide more actions for other stuff like advanced dimming with fading
 
 ## Contributions
 
@@ -38,7 +39,7 @@ your contribution to start with. If you like this plugin, please consider &#x260
 
 ```json
 {
-	"plugin" : "milight-reloaded"
+      "plugin" : "milight-reloaded"
 }
 ```
 
@@ -88,6 +89,11 @@ The following predicates and actions are supported:
 * dim {device} to {value}, where {Value} is the percentage of brightness (0-100)
 * milight set color {device} to {value}
 * milight set blink {device} [ count {times} [ delay {milliseconds} ]]
+* milight set blink {device} [ count {times} [ delay {milliseconds} ]]
+* milight set effectMode {device} [ mode {mode [1-9]}] supported with v6, only!
+* milight set effectNext {device} [ count {times} [ delay {milliseconds} ]]
+* milight set effectSlower {device} [ count {times} [ delay {milliseconds} ]]
+* milight set effectFaster {device} [ count {times} [ delay {milliseconds} ]]
 
 The optional `count` parameter for for the blink action is used to specify how often the command shall be 
  executed within a value range from 1 to 10. The optional `delay` parameter specifies the time in milliseconds between 
@@ -167,6 +173,10 @@ The following predicates and actions are supported:
 * dim {device} to {value}, where {Value} is the percentage of brightness (0-100)
 * milight set color {device} to {value}
 * milight set blink {device} [ count {times} [ delay {milliseconds} ]]
+* milight set effectMode {device} [ mode {mode [1-9]}] 
+* milight set effectNext {device} [ count {times} [ delay {milliseconds} ]]
+* milight set effectSlower {device} [ count {times} [ delay {milliseconds} ]]
+* milight set effectFaster {device} [ count {times} [ delay {milliseconds} ]]
 
 The optional `count` parameter for for the blink action is used to specify how often the command shall be 
  executed within a value range from 1 to 10. The optional `delay` parameter specifies the time in milliseconds between 
@@ -203,6 +213,10 @@ The following predicates and actions are supported:
 * dim {device} to {value}, where {Value} is the percentage of brightness (0-100)
 * milight set color {device} to {value}
 * milight set blink {device} [ count {times} [ delay {milliseconds} ]]
+* milight set effectMode {device} [ mode {mode [1-9]}] 
+* milight set effectNext {device} [ count {times} [ delay {milliseconds} ]]
+* milight set effectSlower {device} [ count {times} [ delay {milliseconds} ]]
+* milight set effectFaster {device} [ count {times} [ delay {milliseconds} ]]
 
 The optional `count` parameter for for the blink action is used to specify how often the command shall be 
  executed within a value range from 1 to 10. The optional `delay` parameter specifies the time in milliseconds between 
