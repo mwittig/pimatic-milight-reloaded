@@ -138,8 +138,8 @@ module.exports = (env) ->
         throw new Error("Bad color hex string")
 
     changeDimlevelTo: (dimlevel) ->
-      @_setDimlevel dimlevel
       if dimlevel > 0
+        @_setDimlevel dimlevel
         @_onOffCommand on,
           brightness: dimlevel
       else
