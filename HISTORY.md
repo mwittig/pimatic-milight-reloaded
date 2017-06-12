@@ -1,5 +1,8 @@
 # Release History
 
+* 20170612, V0.9.8
+    * Added actions for effect mode support with MilightBridgeLight, MilightRGBWZone, and MilightFullColorZone
+    * Updated dependencies 
 * 20170501, V0.9.7
     * Implemented blink action to let the lights flash for given number of times
     * Updated dependencies
