@@ -1,5 +1,7 @@
 # Release History
 
+* 20170612, V0.9.9
+    * Fixed dim behaviour when dim level is 0, issue #10
 * 20170612, V0.9.8
     * Added actions for effect mode support with MilightBridgeLight, MilightRGBWZone, and MilightFullColorZone
     * Updated dependencies 
