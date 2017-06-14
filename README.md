@@ -94,6 +94,7 @@ The following predicates and actions are supported:
 * milight set effectNext {device} [ count {times} [ delay {milliseconds} ]]
 * milight set effectSlower {device} [ count {times} [ delay {milliseconds} ]]
 * milight set effectFaster {device} [ count {times} [ delay {milliseconds} ]]
+* milight set nightMode {device}
 
 The optional `count` parameter for for the blink action is used to specify how often the command shall be 
  executed within a value range from 1 to 10. The optional `delay` parameter specifies the time in milliseconds between 
@@ -177,6 +178,7 @@ The following predicates and actions are supported:
 * milight set effectNext {device} [ count {times} [ delay {milliseconds} ]]
 * milight set effectSlower {device} [ count {times} [ delay {milliseconds} ]]
 * milight set effectFaster {device} [ count {times} [ delay {milliseconds} ]]
+* milight set nightMode {device}
 
 The optional `count` parameter for for the blink action is used to specify how often the command shall be 
  executed within a value range from 1 to 10. The optional `delay` parameter specifies the time in milliseconds between 
@@ -217,6 +219,7 @@ The following predicates and actions are supported:
 * milight set effectNext {device} [ count {times} [ delay {milliseconds} ]]
 * milight set effectSlower {device} [ count {times} [ delay {milliseconds} ]]
 * milight set effectFaster {device} [ count {times} [ delay {milliseconds} ]]
+* milight set nightMode {device}
 
 The optional `count` parameter for for the blink action is used to specify how often the command shall be 
  executed within a value range from 1 to 10. The optional `delay` parameter specifies the time in milliseconds between 

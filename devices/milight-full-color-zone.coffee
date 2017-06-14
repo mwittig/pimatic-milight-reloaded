@@ -28,7 +28,9 @@ module.exports = (env) ->
         params:
           hue:
             type: t.number
-
+      @actions.nightMode =
+        description: "Enables the night mode"
+        params: {}
       @actions.effectMode =
         description: "Set effect mode"
         params:
@@ -109,6 +111,9 @@ module.exports = (env) ->
             hue: hsv[0]
             saturation: hsv[1]
             dimlevel: hsv[2]
+
+    nightMode: () ->
+      @light.sendCommands @commands.fullColor.nightMode @zoneId
 
     effectMode: (mode) ->
       @light.sendCommands @commands.fullColor.effectMode @zoneId, mode

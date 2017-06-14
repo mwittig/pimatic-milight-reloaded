@@ -40,6 +40,9 @@ module.exports = (env) ->
         params:
           colorCode:
             type: t.string
+      @actions.nightMode =
+        description: "Enables the night mode"
+        params: {}
       @actions.effectMode =
         description: "Set effect mode"
         params:
@@ -192,6 +195,9 @@ module.exports = (env) ->
         @base.debug "setting hue to: #{hue}"
         hue = Milight.helper.rgbToHue.apply Milight.helper, rgb
         @changeHueTo hue
+
+    nightMode: () ->
+      @light.sendCommands @commands.rgbw.nightMode @zoneId
 
     effectMode: (mode) ->
       if @isVersion6

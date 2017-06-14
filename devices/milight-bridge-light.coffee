@@ -20,6 +20,9 @@ module.exports = (env) ->
       @id = @config.id
       @isVersion6 = true
       @actions = _.cloneDeep @actions
+      @actions.nightMode =
+        description: "Enables the night mode"
+        params: {}
       @actions.effectMode =
         description: "Set effect mode"
         params:
@@ -63,6 +66,12 @@ module.exports = (env) ->
         commands.push @commands.bridge.off()
       @_previousState = newState
       @light.sendCommands commands
+
+    nightMode: () ->
+      #@light.sendCommands @commands.bridge.nightMode()
+      # as nightMode does not seem to work for bridge light we need to emulate it
+      @light.sendCommands @commands.bridge.whiteMode()
+      @light.sendCommands @commands.bridge.brightness 1
 
     effectMode: (mode) ->
       @light.sendCommands @commands.bridge.effectMode mode

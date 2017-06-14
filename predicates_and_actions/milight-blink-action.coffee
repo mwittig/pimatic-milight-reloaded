@@ -58,6 +58,7 @@ module.exports = (env) ->
       M(input, context)
       .match([
         'milight set blink '
+        'milight set nightMode '
       ])
       .matchDevice applicableMilightDevices, (m, d) =>
         # Already had a match with another device?
@@ -67,13 +68,17 @@ module.exports = (env) ->
         device = d
         action = m.getFullMatch().split(' ')[2]
 
-        next = m.match(' count ').matchNumericExpression (m, tokens) =>
-          countTokens = tokens
-        if next.hadMatch() then m = next
+        unless _.includes(['nightMode'], action)
+          next = m.match(' count ').matchNumericExpression (m, tokens) =>
+            countTokens = tokens
+          if next.hadMatch() then m = next
 
-        next = m.match(' delay ').matchNumericExpression (m, tokens) =>
-          delayTokens = tokens
-        if next.hadMatch() then m = next
+          next = m.match(' delay ').matchNumericExpression (m, tokens) =>
+            delayTokens = tokens
+          if next.hadMatch() then m = next
+        else
+          countTokens = [1]
+          delayTokens = [0]
 
         match = m.getFullMatch()
 

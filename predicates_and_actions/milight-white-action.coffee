@@ -61,7 +61,6 @@ module.exports = (env) ->
           'milight set cooler '
           'milight set brighter '
           'milight set darker '
-          'milight set nightMode '
           'milight set maxBright '
         ])
         .matchDevice applicableMilightDevices, (m, d) =>
@@ -72,7 +71,7 @@ module.exports = (env) ->
           device = d
           action = m.getFullMatch().split(' ')[2]
 
-          unless _.includes(['nightMode', 'maxBright'], action)
+          unless _.includes(['maxBright'], action)
             next = m.match(' count ').matchNumericExpression (m, tokens) =>
               countTokens = tokens
             if next.hadMatch() then m = next
