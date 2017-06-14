@@ -1,9 +1,11 @@
 # Release History
 
+* 20170615, V0.9.10
+    * Added nightMode action for MilightBridgeLight, MilightRGBWZone, and MilightFullColorZone
 * 20170612, V0.9.9
     * Fixed dim behaviour when dim level is 0, issue #10
 * 20170612, V0.9.8
-    * Added actions for effect mode support with MilightBridgeLight, MilightRGBWZone, and MilightFullColorZone
+    * Added actions for effect mode support for MilightBridgeLight, MilightRGBWZone, and MilightFullColorZone
     * Updated dependencies 
 * 20170501, V0.9.7
     * Implemented blink action to let the lights flash for given number of times
