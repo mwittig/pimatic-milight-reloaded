@@ -20,6 +20,11 @@ module.exports = (env) ->
       @id = @config.id
       @isVersion6 = true
       @actions = _.cloneDeep @actions
+      @actions.setColor =
+        description: 'set a light color'
+        params:
+          colorCode:
+            type: t.string
       @actions.nightMode =
         description: "Enables the night mode"
         params: {}
@@ -66,6 +71,18 @@ module.exports = (env) ->
         commands.push @commands.bridge.off()
       @_previousState = newState
       @light.sendCommands commands
+
+    setColor: (color) ->
+      @base.debug "color change requested to: #{color}"
+      rgb = @_hexStringToRgb color
+      @base.debug "RGB:", rgb
+      if _.isEqual rgb, [255,255,255]
+        @base.debug "setting white mode: #{hue}"
+        @changeWhiteTo true
+      else
+        @base.debug "setting hue to: #{hue}"
+        hue = Milight.helper.rgbToHue.apply Milight.helper, rgb
+        @changeHueTo hue
 
     nightMode: () ->
       #@light.sendCommands @commands.bridge.nightMode()
