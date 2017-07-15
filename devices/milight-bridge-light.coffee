@@ -77,11 +77,11 @@ module.exports = (env) ->
       rgb = @_hexStringToRgb color
       @base.debug "RGB:", rgb
       if _.isEqual rgb, [255,255,255]
-        @base.debug "setting white mode: #{hue}"
+        @base.debug "setting white mode"
         @changeWhiteTo true
       else
-        @base.debug "setting hue to: #{hue}"
         hue = Milight.helper.rgbToHue.apply Milight.helper, rgb
+        @base.debug "setting hue to: #{hue}"
         @changeHueTo hue
 
     nightMode: () ->
