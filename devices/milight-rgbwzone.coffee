@@ -146,6 +146,7 @@ module.exports = (env) ->
         @_onOffCommand on,
           brightness: dimlevel
       else
+        @_setState off
         @_onOffCommand off
 
     changeStateTo: (state) ->
