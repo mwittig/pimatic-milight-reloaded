@@ -1,5 +1,7 @@
 # Release History
 
+* 20170715, V0.9.13
+    * Fixed state change event not being triggered for devices based on DimmerActuator, issue #12
 * 20170715, V0.9.12
     * Various bug fixes for RGBW and FullColor setColor method
 * 20170715, V0.9.11
