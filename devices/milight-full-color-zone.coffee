@@ -98,7 +98,9 @@ module.exports = (env) ->
         @base.debug "setting white mode"
         @changeWhiteTo true
       else
-        hsv = Milight.helper.rgbToFullColorHsv.apply Milight.helper, rgb
+        hsv = Milight.helper.rgbToHsv.apply Milight.helper, rgb
+        @base.debug "setting color to HSV: #{hsv}"
+        hsv[0] = (256 + 176 - Math.floor(Number(hsv[0]) / 360.0 * 255.0)) % 256;
         @base.debug "setting color to HSV: #{hsv}"
         @base.setAttribute "white", false
         @base.setAttribute "hue", hsv[0]
