@@ -57,7 +57,7 @@ module.exports = (env) ->
         delayBetweenCommands = @base.normalize delayBetweenCommands, 100
       @light = new Milight.MilightController
         ip: @config.ip
-        port: @config.port
+        port: @config.port  if @config.port > 0
         type: @config.bridgeVersion
         broadcast: @config.broadcast ? undefined
         delayBetweenCommands: delayBetweenCommands
