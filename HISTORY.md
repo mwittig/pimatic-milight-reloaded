@@ -1,5 +1,7 @@
 # Release History
 
+* 20170715, V0.9.12
+    * Various bug fixes for RGBW and FullColor setColor method
 * 20170715, V0.9.11
     * Updated to node-milight-promise@0.2.1 to enable proper synchronization across multiple devices
 * 20170615, V0.9.10
