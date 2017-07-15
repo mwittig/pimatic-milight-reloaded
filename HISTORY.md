@@ -1,5 +1,7 @@
 # Release History
 
+* 20170715, V0.9.11
+    * Updated to node-milight-promise@0.2.1 to enable proper synchronization across multiple devices
 * 20170615, V0.9.10
     * Added nightMode action for MilightBridgeLight, MilightRGBWZone, and MilightFullColorZone
 * 20170612, V0.9.9
