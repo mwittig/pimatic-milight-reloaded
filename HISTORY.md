@@ -1,5 +1,12 @@
 # Release History
 
+* 20170719, V0.9.14
+    * Effect mode, night mode, color, and white mode actions now automatically turn the light on.
+    * Fixture of chamgeDimlevelTo/changeStateTo - reverted to standard behaviour to make it consistent with the 
+      default behaviour in pimatic, i.e. turning the dimmer on will set it 100%
+    * Added 'keepDimlevel' device configuration property. This can used to activate the old behavior, i.e. 
+      turning the dimmer on will set it to the previously set dimlevel if greater than 0
+    * Updated to node-milight-promise@0.2.2 to include bug fixes in the base driver
 * 20170715, V0.9.13
     * Fixed state change event not being triggered for devices based on DimmerActuator, issue #12
 * 20170715, V0.9.12
