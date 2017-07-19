@@ -83,9 +83,12 @@ module.exports = (env) ->
 
     changeSaturationTo: (saturation) ->
       @base.setAttribute "saturation", saturation
-      if @_state
-        @_onOffCommand on,
-          saturation: saturation
+      if not @_state
+        level = if @_keepDimlevel then @_oldDimlevel else 100
+        @_setDimlevel level
+
+      @_onOffCommand on,
+        saturation: saturation
 
     getSaturation: () ->
       Promise.resolve @_saturation
@@ -103,9 +106,9 @@ module.exports = (env) ->
         hsv[0] = (256 + 176 - Math.floor(Number(hsv[0]) / 360.0 * 255.0)) % 256;
         @base.debug "setting color to HSV: #{hsv}"
         @base.setAttribute "white", false
+        @_setDimlevel hsv[2]
         @base.setAttribute "hue", hsv[0]
         @base.setAttribute "saturation", hsv[1]
-        @_setDimlevel hsv[2]
 
         if @_state
           @_onOffCommand on,
@@ -115,12 +118,15 @@ module.exports = (env) ->
             dimlevel: hsv[2]
 
     nightMode: () ->
+      @changeStateTo true
       @light.sendCommands @commands.fullColor.nightMode @zoneId
 
     effectMode: (mode) ->
+      @changeStateTo true
       @light.sendCommands @commands.fullColor.effectMode @zoneId, mode
 
     effectNext: () ->
+      @changeStateTo true
       @light.sendCommands @commands.fullColor.effectModeNext @zoneId
 
     effectFaster: () ->

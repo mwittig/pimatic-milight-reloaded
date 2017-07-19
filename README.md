@@ -19,13 +19,19 @@ Since the first release the following features have been implemented:
 * Implemented basic support for V6 full color bulbs (color temperature and saturation control missing to date)
 * Implemented actions to control color temperature and brightness for MilightWWCWZone
 * Implemented blink action to let the lights flash for given number of times
-* NEW: Implemented actions control effect modes for MilightRGBWZone, MilightBridgeLight, and MilightFullColorZone
+* Implemented actions control effect modes for MilightRGBWZone, MilightBridgeLight, and MilightFullColorZone
+* Implemented saturation control for full color bulbs
   
 The next steps are as follows:
 * Improve the support for the new full color bulbs by adding the missing features, i.e. color temperature 
-  and saturation control
 * Provide a custom UI control
 * Provide more actions for other stuff like advanced dimming with fading
+
+## Notable Changes
+
+As of version 0.9.14 the color device types now implement the default behaviour of pimatic dimmer, i.e. turning 
+the dimmer on will always set the dim level to 100%. If you wish to retain the old behavior, you set the device 
+configuration option `keepDimlevel`  to `true`.
 
 ## Contributions
 

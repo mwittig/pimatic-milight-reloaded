@@ -18,6 +18,8 @@ module.exports = (env) ->
       @id = @config.id
       @isVersion6 = v6 or @config.bridgeVersion is 'v6'
       @zoneId = @config.zoneId
+      @_keepDimlevel = @config.keepDimlevel
+
       @addAttribute 'hue',
         description: "Hue value",
         type: t.number
@@ -68,26 +70,34 @@ module.exports = (env) ->
         delayBetweenCommands: delayBetweenCommands
         commandRepeat: @config.commandRepeat
 
-      @commands = if @config.useTwoByteCommands then Milight.commands2 else Milight.commands
       if @isVersion6
         @commands = Milight.commandsV6
-      @_dimlevel = lastState?.dimlevel?.value or 0
-      @_state = unless @_dimlevel is 0 then true else false
-      @_hue = lastState?.hue?.value or 0
-      @_white = lastState?.white?.value or false
-      @_previousState = null
+      else
+        @commands = if @config.useTwoByteCommands then Milight.commands2 else Milight.commands
+
       super()
+      @_dimlevel = lastState?.dimlevel?.value or 0
+      @_oldDimlevel = if @_dimlevel > 0 then @_dimlevel else 100
+      @_state = @_dimlevel > 0
+      @_hue = lastState?.hue?.value or 0
+      @_white = (@_hue is 256) or lastState?.white?.value or false
+      @_previousState = null
       process.nextTick () =>
-        @changeStateTo @_state
-        @changeHueTo @_hue unless @_white
-        @changeWhiteTo @_white if @_white
-        @changeDimlevelTo @_dimlevel
+        @changeWhiteTo @_white
 
     destroy: () ->
       @light.close()
       commons.clearAllPeriodicTimers()
       super()
 
+    turnOn: ->
+      level = if @_keepDimlevel then @_oldDimlevel else 100
+      @changeDimlevelTo level
+
+    _setDimlevel: (level) ->
+      @_oldDimlevel = level if level > 0
+      super(level)
+      
     _onOffCommand: (newState, options = {}) ->
       commands = []
       if newState
@@ -141,45 +151,41 @@ module.exports = (env) ->
         throw new Error("Bad color hex string")
 
     changeDimlevelTo: (dimlevel) ->
-      if dimlevel > 0
         @_setDimlevel dimlevel
-        @_onOffCommand on,
+        @_onOffCommand dimlevel > 0 ? on : off,
           brightness: dimlevel
-      else
-        @_setState off
-        @_onOffCommand off
-
-    changeStateTo: (state) ->
-      @_setState state
-      if state
-        @_onOffCommand on
-      else
-        @_onOffCommand off
 
     changeHueTo: (hue) ->
       changeFromWhite = @_white
       @base.setAttribute "white", false
-      @base.setAttribute "hue", hue
-      if @_state
-        @_onOffCommand on,
-          hue: hue
-          brightness: @_dimlevel if changeFromWhite
+      @base.setAttribute "hue",
+      if not @_state
+        level = if @_keepDimlevel then @_oldDimlevel else 100 
+        @_setDimlevel level
+      
+      @_onOffCommand on,
+        hue: hue
+        brightness: @_dimlevel
 
     getHue: () ->
       Promise.resolve @_hue
 
     changeWhiteTo: (white) ->
-      changeFromHue = white and not @_white
+      changeDimlevel = (white and not @_white) or not @_state
+      if not @_state
+        level = if @_keepDimlevel then @_oldDimlevel else 100
+        @_setDimlevel level
+      
       @base.setAttribute "white", white
-      @base.setAttribute "hue", 256
-      if @_state
+      if white
+        @base.setAttribute "hue", 256
         @_onOffCommand on,
           white: white
-          brightness: @_dimlevel if changeFromHue
-      else if not white
+          brightness: @_dimlevel if changeDimlevel
+      else
         @_onOffCommand on,
           hue: @_hue
-          brightness: @_dimlevel
+          brightness: @_dimlevel if changeDimlevel
 
     getWhite: () ->
       Promise.resolve @_white
@@ -197,15 +203,18 @@ module.exports = (env) ->
         @changeHueTo hue
 
     nightMode: () ->
+      @changeStateTo true
       @light.sendCommands @commands.rgbw.nightMode @zoneId
 
     effectMode: (mode) ->
+      @changeStateTo true
       if @isVersion6
         @light.sendCommands @commands.rgbw.effectMode @zoneId, mode
       else
         @base.error "effectMode command not supported by legacy Milight controller"
 
     effectNext: () ->
+      @changeStateTo true
       @light.sendCommands @commands.rgbw.effectModeNext @zoneId
 
     effectFaster: () ->

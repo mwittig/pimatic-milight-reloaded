@@ -67,7 +67,6 @@ module.exports = (env) ->
       if @isVersion6
         @commands = Milight.commandsV6
       @_state = lastState?.state?.value or false
-      @_previousState = null
       super()
       process.nextTick () =>
         @changeStateTo @_state
@@ -83,41 +82,44 @@ module.exports = (env) ->
         commands.push @commands.white.on @zoneId
       else
         commands.push @commands.white.off @zoneId
-      @_previousState = newState
       @light.sendCommands commands
 
     changeStateTo: (state) ->
       @_setState state
-      if state
-        @_onOffCommand on
-      else
-        @_onOffCommand off
+      @_onOffCommand state
 
     brighter: () ->
+      @changeStateTo true
       @light.sendCommands @commands.white.brightUp @zoneId
 
     darker: () ->
+      @changeStateTo true
       @light.sendCommands @commands.white.brightDown @zoneId
 
     warmer: () ->
+      @changeStateTo true
       @light.sendCommands @commands.white.warmer @zoneId
 
     cooler: () ->
+      @changeStateTo true
       @light.sendCommands @commands.white.cooler @zoneId
 
     nightMode: () ->
+      @changeStateTo true
       @light.sendCommands @commands.white.nightMode @zoneId
 
     maxBright: () ->
       @light.sendCommands @commands.white.maxBright @zoneId
 
     effectMode: (mode) ->
+      @changeStateTo true
       if @isVersion6
         @light.sendCommands @commands.white.effectMode @zoneId, mode
       else
         @base.error "effectMode command not supported by legacy Milight controller"
 
     effectNext: () ->
+      @changeStateTo true
       @light.sendCommands @commands.white.effectModeNext @zoneId
 
     effectFaster: () ->

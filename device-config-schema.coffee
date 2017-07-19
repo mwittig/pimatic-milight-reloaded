@@ -37,6 +37,10 @@ module.exports = {
         description: "If true use IP broadcast mode, unicast mode is used otherwise"
         type: "boolean"
         default: false
+      keepDimlevel:
+        description: "If true turning on will set the previous dimlevel, otherwise the dimlevel is set to 100"
+        type: "boolean"
+        default: false
   }
   MilightWWCWZone: {
     title: "Milight WWCW Zone configuration"
@@ -93,6 +97,10 @@ module.exports = {
         type: "integer"
         enum: [75, 100, 125, 150]
         default: 75
+      keepDimlevel:
+        description: "If true turning on will set the previous dimlevel, otherwise the dimlevel is set to 100"
+        type: "boolean"
+        default: false
   }
   MilightFullColorZone: {
     title: "Milight V6 Full Color (RGB WW/CW Light configuration"
@@ -115,5 +123,9 @@ module.exports = {
         type: "integer"
         enum: [75, 100, 125, 150]
         default: 75
+      keepDimlevel:
+        description: "If true turning on will set the previous dimlevel, otherwise the dimlevel is set to 100"
+        type: "boolean"
+        default: false
   }
 }

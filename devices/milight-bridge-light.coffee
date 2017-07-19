@@ -87,13 +87,15 @@ module.exports = (env) ->
     nightMode: () ->
       #@light.sendCommands @commands.bridge.nightMode()
       # as nightMode does not seem to work for bridge light we need to emulate it
-      @light.sendCommands @commands.bridge.whiteMode()
-      @light.sendCommands @commands.bridge.brightness 1
+      @changeStateTo true
+      @light.sendCommands [@commands.bridge.whiteMode true, @commands.bridge.brightness 1]
 
     effectMode: (mode) ->
+      @changeStateTo true
       @light.sendCommands @commands.bridge.effectMode mode
 
     effectNext: () ->
+      @changeStateTo true
       @light.sendCommands @commands.bridge.effectModeNext()
 
     effectFaster: () ->
