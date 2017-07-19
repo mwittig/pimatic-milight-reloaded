@@ -32,7 +32,7 @@
   "dependencies": {
     "colornames": "^1.1.1",
     "lodash.uniqby": "^4.7.0",
-    "node-milight-promise": "^0.2.1",
+    "node-milight-promise": "^0.2.2",
     "pimatic-plugin-commons": "^0.9.5"
   },
   "peerDependencies": {
