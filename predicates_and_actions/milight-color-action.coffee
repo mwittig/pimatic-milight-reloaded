@@ -42,7 +42,8 @@ module.exports = (env) ->
     parseAction: (input, context) =>
       milightColorDevices = _(@framework.deviceManager.devices).values().filter(
         (device) => _.includes [
-          'MilightRGBWZone', 'MilightBridgeLight', 'MilightFullColorZone'
+          'MilightRGBWZone', 'MilightBridgeLight',
+          'MilightFullColorZone', 'Milight8ChannelFullColorZone'
         ], device.config.class
       ).value()
 

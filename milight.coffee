@@ -13,6 +13,10 @@ deviceConfigTemplates =
     name: "Milight V6 Full Color Zone"
     class: "MilightFullColorZone"
     v6: true
+  "Milight8ChannelFullColorZone":
+    name: "Milight V6 Full Color 8-channel Zone"
+    class: "Milight8ChannelFullColorZone"
+    v6: true
 
 actionProviders = [
   'milight-color-action'
@@ -57,7 +61,7 @@ module.exports = (env) ->
           device = deviceConfigTemplates[templateName]
           className = device.class
           # convert camel-case classname to kebap-case filename
-          filename = className.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
+          filename = className.replace(/([a-z])([0-9]|[A-Z])/g, '$1-$2').toLowerCase()
           classType = require('./devices/' + filename)(env)
           @base.debug "Registering device class #{className}"
           @framework.deviceManager.registerDeviceClass(className, {

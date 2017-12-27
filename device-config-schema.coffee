@@ -128,4 +128,30 @@ module.exports = {
         type: "boolean"
         default: false
   }
+  Milight8ChannelFullColorZone: {
+    title: "Milight V6 Full Color with 8-channel controller configuration"
+    type: "object"
+    properties:
+      ip:
+        description: "The IP address of the Milight bridge"
+        type: "string"
+        default: "255.255.255.255"
+      port:
+        description: "The port of the Milight bridge (0 = automatically select default port)"
+        type: "integer"
+        default: 0
+      zoneId:
+        description: "The zone to be controlled, [1-8] and 0 for all zones"
+        enum: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        default: 1
+      delayBetweenCommands:
+        description: "The delay time in ms to wait between transmissions, default 75ms"
+        type: "integer"
+        enum: [75, 100, 125, 150]
+        default: 75
+      keepDimlevel:
+        description: "If true turning on will set the previous dimlevel, otherwise the dimlevel is set to 100"
+        type: "boolean"
+        default: false
+  }
 }

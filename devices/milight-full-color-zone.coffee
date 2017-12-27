@@ -15,10 +15,6 @@ module.exports = (env) ->
       @debug = plugin.config.debug ? false
       @base = commons.base @, @config.class
 
-      @name = @config.name
-      @id = @config.id
-      @isVersion6 = true
-      @zoneId = @config.zoneId
       @addAttribute 'saturation',
         description: "Saturation value",
         type: t.number
@@ -48,6 +44,7 @@ module.exports = (env) ->
 
       @_saturation = lastState?.saturation?.value or 0
       super @config, plugin, lastState, true
+      @cmd = @commands.fullColor
 
     destroy: () ->
       @light.close()
@@ -57,27 +54,27 @@ module.exports = (env) ->
     _onOffCommand: (newState, options = {}) ->
       commands = []
       if newState
-        commands.push @commands.fullColor.on @zoneId unless options.white
+        commands.push @cmd.on @zoneId unless options.white
         unless newState is @_previousState
           if options.white ? @_white
-            commands.push @commands.fullColor.whiteMode @zoneId
+            commands.push @cmd.whiteMode @zoneId
           else
-            commands.push @commands.fullColor.hue @zoneId, options.hue ? @_hue, true
-            commands.push @commands.fullColor.saturation @zoneId, 0
-          commands.push @commands.fullColor.brightness @zoneId, options.dimlevel ? @_dimlevel
+            commands.push @cmd.hue @zoneId, options.hue ? @_hue, true
+            commands.push @cmd.saturation @zoneId, 0
+          commands.push @cmd.brightness @zoneId, options.dimlevel ? @_dimlevel
           if options.brightness?
-            commands.push @commands.fullColor.brightness @zoneId, options.brightness
+            commands.push @cmd.brightness @zoneId, options.brightness
         else
           if options.white
-            commands.push @commands.fullColor.whiteMode @zoneId
-            commands.push @commands.fullColor.brightness @zoneId, options.dimlevel ? @_dimlevel
+            commands.push @cmd.whiteMode @zoneId
+            commands.push @cmd.brightness @zoneId, options.dimlevel ? @_dimlevel
           else if options.hue?
-            commands.push @commands.fullColor.hue @zoneId, options.hue, true
-            commands.push @commands.fullColor.saturation @zoneId, 0
+            commands.push @cmd.hue @zoneId, options.hue, true
+            commands.push @cmd.saturation @zoneId, 0
           if options.brightness?
-            commands.push @commands.fullColor.brightness @zoneId, options.brightness
+            commands.push @cmd.brightness @zoneId, options.brightness
       else
-        commands.push @commands.fullColor.off @zoneId
+        commands.push @cmd.off @zoneId
       @_previousState = newState
       @light.sendCommands commands
 
@@ -119,21 +116,21 @@ module.exports = (env) ->
 
     nightMode: () ->
       @changeStateTo true
-      @light.sendCommands @commands.fullColor.nightMode @zoneId
+      @light.sendCommands @cmd.nightMode @zoneId
 
     effectMode: (mode) ->
       @changeStateTo true
-      @light.sendCommands @commands.fullColor.effectMode @zoneId, mode
+      @light.sendCommands @cmd.effectMode @zoneId, mode
 
     effectNext: () ->
       @changeStateTo true
-      @light.sendCommands @commands.fullColor.effectModeNext @zoneId
+      @light.sendCommands @cmd.effectModeNext @zoneId
 
     effectFaster: () ->
-      @light.sendCommands @commands.fullColor.effectSpeedUp @zoneId
+      @light.sendCommands @cmd.effectSpeedUp @zoneId
 
     effectSlower: () ->
-      @light.sendCommands @commands.fullColor.effectSpeedDown @zoneId
+      @light.sendCommands @cmd.effectSpeedDown @zoneId
 
     blink: () ->
       @toggle();
