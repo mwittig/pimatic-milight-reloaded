@@ -1,5 +1,8 @@
 # Release History
 
+* 20171227, V0.9.15
+    * Added support for the 8-channel remote control which can manage up to 8-zones
+    * Added support for rgb() color action parameter to pass color given as three decimal RGB values
 * 20170719, V0.9.14
     * Effect mode, night mode, color, and white mode actions now automatically turn the light on.
     * Fixture of chamgeDimlevelTo/changeStateTo - reverted to standard behaviour to make it consistent with the 
