@@ -63,12 +63,23 @@ module.exports = (env) ->
 
         device = d
 
+        re = /(rgb\(\s*(?:(?:\d{1,2}|1\d\d|2(?:[0-4]\d|5[0-5]))\s*,)\s*(?:(?:\d{1,2}|1\d\d|2(?:[0-4]\d|5[0-5]))\s*,)\s*(?:(?:\d{1,2}|1\d\d|2(?:[0-4]\d|5[0-5]))\s*)\))(.*)/
         m.match [' to '], (m) ->
           m.or [
             # rgb hex like #00FF00
             (m) -> m.match [/(#[a-fA-F\d]{6})(.*)/], (m, s) ->
               color = s.trim()
               match = m.getFullMatch()
+
+            # match rgb() color
+            (m) -> m.match [re], (m, s) ->
+              match = m.getFullMatch()
+              result = /rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)(.*)/.exec s
+              if result?
+                r = Number result[1]
+                g = Number result[2]
+                b = Number result[3]
+                color = "#" + ("00000" + Number(((r&0x0ff)<<16)|((g&0x0ff)<<8)|(b&0x0ff)).toString(16)).substr(-6)
 
             # color name like red
             (m) -> m.match colorNames, (m, s) ->
