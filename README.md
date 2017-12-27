@@ -21,6 +21,7 @@ Since the first release the following features have been implemented:
 * Implemented blink action to let the lights flash for given number of times
 * Implemented actions control effect modes for MilightRGBWZone, MilightBridgeLight, and MilightFullColorZone
 * Implemented saturation control for full color bulbs
+* Implemented support for new 8-zone controller
   
 The next steps are as follows:
 * Improve the support for the new full color bulbs by adding the missing features, i.e. color temperature 
@@ -191,9 +192,12 @@ The optional `count` parameter for for the blink action is used to specify how o
  repetitions ranging within a value range from 0 to 10000. Invalid values will be silently transformed to the closest
  valid value.
 
-#### MilightFullColorZone
+#### MilightFullColorZone and Milight8ChannelFullColorZone
 
-MilightFullColorZone is used for the full color (RGB WW/CW) lights supported iwth the new iBox controllers. 
+MilightFullColorZone is used for the full color (RGB WW/CW) lights supported with the new iBox controllers. 
+ Milight8ChannelFullColorZone is used with the new 8-channel remote controller along with full color (RGB WW/CW) 
+ lights. The new remote can manage up to 8 zones. Note, the 8-channel remote controller is not supported with 
+ all iBox controllers.  It has been reported to work with recent makes of the iBox2 controller. 
 
 ```json
 {
@@ -231,6 +235,7 @@ The optional `count` parameter for for the blink action is used to specify how o
  executed within a value range from 1 to 10. The optional `delay` parameter specifies the time in milliseconds between 
  repetitions ranging within a value range from 0 to 10000. Invalid values will be silently transformed to the closest
  valid value.
+
   
 ## History
 
