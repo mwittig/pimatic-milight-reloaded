@@ -158,7 +158,7 @@ module.exports = (env) ->
     changeHueTo: (hue) ->
       changeFromWhite = @_white
       @base.setAttribute "white", false
-      @base.setAttribute "hue",
+      @base.setAttribute "hue", hue
       if not @_state
         level = if @_keepDimlevel then @_oldDimlevel else 100 
         @_setDimlevel level
