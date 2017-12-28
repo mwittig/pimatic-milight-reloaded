@@ -1,5 +1,7 @@
 # Release History
 
+* 20171228, V0.9.16
+    * Fixed RGBW hue attribute set to invalid value, issue #19
 * 20171227, V0.9.15
     * Added support for the 8-channel remote control which can manage up to 8-zones
     * Added support for rgb() color action parameter to pass color given as three decimal RGB values
