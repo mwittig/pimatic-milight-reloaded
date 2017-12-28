@@ -93,8 +93,11 @@ The following predicates and actions are supported:
 * {device} is turned on|off
 * switch {device} on|off
 * toggle {device}
-* dim {device} to {value}, where {Value} is the percentage of brightness (0-100)
-* milight set color {device} to {value}
+* dim {device} to {value}, where {value} is the percentage of brightness (0-100)
+* milight set color {device} to {value}, where {value} is one of the following
+    * a six digit hexadecimal RGB color code preceded by `#`, e.g., `#FF0000`,
+    * a rgb function provided with the decimals for the three base color values, e.g., `rgb(255, 0, 0)` 
+    * a CSS color name, e.g., `red`
 * milight set blink {device} [ count {times} [ delay {milliseconds} ]]
 * milight set blink {device} [ count {times} [ delay {milliseconds} ]]
 * milight set effectMode {device} [ mode {mode [1-9]}] supported with v6, only!
@@ -179,7 +182,10 @@ The following predicates and actions are supported:
 * switch {device} on|off
 * toggle {device}
 * dim {device} to {value}, where {Value} is the percentage of brightness (0-100)
-* milight set color {device} to {value}
+* milight set color {device} to {value}, where {value} is one of the following
+    * a six digit hexadecimal RGB color code preceded by `#`, e.g., `#FF0000`,
+    * a rgb function provided with the decimals for the three base color values, e.g., `rgb(255, 0, 0)` 
+    * a CSS color name, e.g., `red`
 * milight set blink {device} [ count {times} [ delay {milliseconds} ]]
 * milight set effectMode {device} [ mode {mode [1-9]}] 
 * milight set effectNext {device} [ count {times} [ delay {milliseconds} ]]
@@ -223,7 +229,10 @@ The following predicates and actions are supported:
 * switch {device} on|off
 * toggle {device}
 * dim {device} to {value}, where {Value} is the percentage of brightness (0-100)
-* milight set color {device} to {value}
+* milight set color {device} to {value}, where {value} is one of the following
+   * a six digit hexadecimal RGB color code preceded by `#`, e.g., `#FF0000`,
+   * a rgb function provided with the decimals for the three base color values, e.g., `rgb(255, 0, 0)` 
+   * a CSS color name, e.g., `red`
 * milight set blink {device} [ count {times} [ delay {milliseconds} ]]
 * milight set effectMode {device} [ mode {mode [1-9]}] 
 * milight set effectNext {device} [ count {times} [ delay {milliseconds} ]]
