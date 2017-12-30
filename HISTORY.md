@@ -1,5 +1,7 @@
 # Release History
 
+* 20171230, V0.9.17
+    * Fixed state handling on device initialization to avoid zone being switched on if it was switched off, issue #17
 * 20171228, V0.9.16
     * Fixed RGBW hue attribute set to invalid value, issue #19
 * 20171227, V0.9.15
