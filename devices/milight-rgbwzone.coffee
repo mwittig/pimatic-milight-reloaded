@@ -83,7 +83,7 @@ module.exports = (env) ->
       @_white = (@_hue is 256) or lastState?.white?.value or false
       @_previousState = null
       process.nextTick () =>
-        @changeWhiteTo @_white
+        @changeWhiteTo @_white if @_state
 
     destroy: () ->
       @light.close()
