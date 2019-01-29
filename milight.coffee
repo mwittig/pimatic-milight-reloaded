@@ -30,7 +30,7 @@ module.exports = (env) ->
 
   Promise = env.require 'bluebird'
   _ = env.require 'lodash'
-  uniqBy = require 'lodash.uniqby'
+  uniqBy = _.uniqBy ? _.uniq
 
   os = require 'os'
   commons = require('pimatic-plugin-commons')(env)

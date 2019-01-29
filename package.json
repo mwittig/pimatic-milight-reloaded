@@ -31,9 +31,8 @@
   },
   "dependencies": {
     "colornames": "^1.1.1",
-    "lodash.uniqby": "^4.7.0",
-    "node-milight-promise": "^0.3.0",
-    "pimatic-plugin-commons": "^0.9.5"
+    "node-milight-promise": "^0.3.2",
+    "pimatic-plugin-commons": "^0.9.8"
   },
   "peerDependencies": {
     "pimatic": ">=0.8.0 <1.0.0"
