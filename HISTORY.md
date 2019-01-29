@@ -1,5 +1,9 @@
 # Release History
 
+* 20190129, V0.9.18
+    * Removed dependency to lodash.uniq
+    * Added bundledDependencies to simplify and speed-up installation on Raspberry Pi
+    * Updated dependencies
 * 20171230, V0.9.17
     * Fixed state handling on device initialization to avoid zone being switched on if it was switched off, issue #17
 * 20171228, V0.9.16
