@@ -252,6 +252,6 @@ See [Release History](https://github.com/mwittig/pimatic-milight-reloaded/blob/m
 
 ## License 
 
-Copyright (c) 2015-2017, Marcus Wittig and contributors. All rights reserved.
+Copyright (c) 2015-2019, Marcus Wittig and contributors. All rights reserved.
 
 [AGPL-3.0](https://github.com/mwittig/pimatic-milight-reloaded/blob/master/LICENSE)
